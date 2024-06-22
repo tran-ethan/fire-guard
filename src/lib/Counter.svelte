@@ -1,10 +1,11 @@
 <script lang="ts">
-  let count: number = 0
+  import "./counter.css";
+  let count: number = 0;
   const increment = () => {
-    count += 1
-  }
+    count += 1;
+  };
 </script>
 
-<button on:click={increment}>
+<button on:click={increment} class="bg-gray-800 text-white p-4;">
   count is {count}
 </button>
