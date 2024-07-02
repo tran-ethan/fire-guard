@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import requests
 import time
+import argparse
 
 url = "http://geogratis.gc.ca/services/elevation/cdem/altitude?"
 def get_altitude(lat: float, lon: float):
@@ -40,7 +41,7 @@ def add_altitude_column(df: pd.DataFrame, header: bool = False):
     df['altitude'] = df.apply(lambda row: get_altitude(row['lat'], row['lon']), axis=1)
     df.to_csv("1950-2021_fires_with_altitude.csv", mode='a', index=False, header=header)
 
-def add_elevation(dfs: list[pd.DataFrame], start_index: int, batch_limit: int, wait_minutes: int):
+def add_elevation(dfs: list[pd.DataFrame], start_index: int = 0, batch_limit: int = 10, wait_minutes: int = 30):
     """
     Add elevation to the dataframes in the list using canada elevation API.
 
@@ -75,5 +76,15 @@ def add_elevation(dfs: list[pd.DataFrame], start_index: int, batch_limit: int, w
 dataset = pd.read_csv("1950-2021_fires.csv")
 #Split the df into len(dataset) // 1000 batches
 dfs = np.array_split(dataset, len(dataset) // 1000)
-# Add elevation to the dataframes
-add_elevation(dfs, 13, 10, 20)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Add elevation to the dataset using the Canada elevation API.")
+    parser.add_argument("--start-index", type=int, default=0,
+                        help="The index to start from. Defaults to 0.")
+    parser.add_argument("--batch-limit", type=int, default=10,
+                        help="The number of batches to do before waiting. Defaults to 10.")
+    parser.add_argument("--wait-minutes", type=int, default=30,
+                        help="The number of minutes to wait after every batch_limit batches. Defaults to 30.")
+    
+    args = parser.parse_args()
+    add_elevation(dfs, args.start_index, args.batch_limit, args.wait_minutes)
