@@ -1,31 +1,11 @@
 import pandas as pd
 import numpy as np
 import requests
-import time
 import argparse
+import time
 
-url = "http://geogratis.gc.ca/services/elevation/cdem/altitude?"
-def get_altitude(lat: float, lon: float):
-  response = requests.get(f"{url}lat={lat}&lon={lon}")
-
-  # Check if the request was successful (status code 200)
-  if response.status_code == 200:
-      try:
-            # Parse the response JSON
-            data = response.json()
-            # Extract the altitude value (assuming the key is 'altitude')
-            altitude = data.get('altitude')
-            if altitude is not None:
-                return altitude
-            else:
-                print('Altitude data not found in response')
-      except ValueError:
-            print('Failed to parse JSON response')
-  else:
-      print('Failed to get altitude')
-
-  return None
-
+API_KEY = "ak_4xd9pBKL_M5J49F0WOU7ZIxdV"
+url = "https://api.gpxz.io/v1/elevation/points"
 def add_altitude_column(df: pd.DataFrame, header: bool = False):
     """
     Add altitude column to the dataframe using get_altitude function. Save the updated dataframe to a csv file.
@@ -38,10 +18,32 @@ def add_altitude_column(df: pd.DataFrame, header: bool = False):
         None
     """
 
-    df['altitude'] = df.apply(lambda row: get_altitude(row['lat'], row['lon']), axis=1)
-    df.to_csv("1950-2021_fires_with_altitude.csv", mode='a', index=False, header=header)
+    latlons: str = "|".join([f"{lat},{lon}" for lat, lon in zip(df['lat'], df['lon'])])
 
-def add_elevation(dfs: list[pd.DataFrame], start_index: int = 0, batch_limit: int = 10, wait_minutes: int = 30):
+    data = {
+        "latlons": latlons,
+        "interpolation": "nearest"
+    }
+
+    headers = {
+        "x-api-key": API_KEY,
+        "Content-Type": "application/json"
+    }
+
+    response = requests.get(url=url, headers=headers, data=data)
+    
+    if response.status_code == 200:
+        try:
+            elevations = response.json()["elevations"]
+            df["altitude"] = df.apply(lambda x: elevations.pop(0)["elevation"], axis=1)
+            df.to_csv("1950-2021_fires.csv", mode='a', header=header, index=False)
+            print("Elevations added successfully.")
+        except KeyError:
+            print("Failed to get elevations. Response:", response);
+    else:
+        print("Failed to get elevations. Status code:", response.status_code)
+
+def add_elevation(dfs: list[pd.DataFrame], start_index: int = 0, batch_limit: int = 1, wait_minutes: int = 10):
     """
     Add elevation to the dataframes in the list using canada elevation API.
 
@@ -62,29 +64,41 @@ def add_elevation(dfs: list[pd.DataFrame], start_index: int = 0, batch_limit: in
         start_index += 1
 
     for df in dfs[start_index:]:
-        if start_index % batch_limit == 0:
-            print(f"{batch_limit} batches complete.")
-            print(f"Waiting for {wait_minutes} minutes in order to avoid rate limiting...")
-            time.sleep(wait_minutes * 60)
         
         print(f"Adding altitude to batch {start_index}...")
         add_altitude_column(df)
         print(f"Batch {start_index} complete\n")
         start_index += 1
+        time.sleep(wait_minutes * 60)
+
+        if start_index % batch_limit == 0:
+            print(f"{batch_limit} batches complete.")
+            print(f"Waiting for {wait_minutes} minutes in order to avoid rate limiting...")
 
 # Load the data
 dataset = pd.read_csv("1950-2021_fires.csv")
-#Split the df into len(dataset) // 1000 batches
-dfs = np.array_split(dataset, len(dataset) // 1000)
+#Split the df into batches
+batch_size = 1000
+dfs = np.array_split(dataset, len(dataset) // batch_size)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Add elevation to the dataset using the Canada elevation API.")
     parser.add_argument("--start-index", type=int, default=0,
                         help="The index to start from. Defaults to 0.")
-    parser.add_argument("--batch-limit", type=int, default=10,
+    parser.add_argument("--batch-limit", type=int, default=1,
                         help="The number of batches to do before waiting. Defaults to 10.")
-    parser.add_argument("--wait-minutes", type=int, default=30,
-                        help="The number of minutes to wait after every batch_limit batches. Defaults to 30.")
+    parser.add_argument("--wait-minutes", type=int, default=10,
+                        help="The number of minutes to wait after every batch_limit batches. Defaults to 10.")
     
     args = parser.parse_args()
-    add_elevation(dfs, args.start_index, args.batch_limit, args.wait_minutes)
+    # add_elevation(dfs, args.start_index, args.batch_limit, args.wait_minutes)
+
+    response = requests.get(
+        url,
+        headers={
+            "x-api-key": API_KEY,
+            "Content-Type": "application/json"
+        },
+        data="latlons=45.4215,-75.6972|45.4215,-75.6972&interpolation=nearest"
+    )
+    print(response.json())
