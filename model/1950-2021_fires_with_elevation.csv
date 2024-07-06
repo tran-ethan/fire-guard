@@ -1,4 +1,4 @@
-agency,lat,lon,date,hectares,cause,response_type,biome,altitude
+agency,lat,lon,date,hectares,cause,response_type,biome,elevation
 BC,59.963,-128.172,1953-05-26,8.0,H, ,Boreal Cordillera,690.0
 BC,59.318,-132.172,1950-06-22,8.0,L, ,Boreal Cordillera,834.0
 BC,59.876,-131.922,1950-06-04,12949.9,H, ,Boreal Cordillera,852.0
