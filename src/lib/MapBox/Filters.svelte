@@ -10,8 +10,21 @@
     Filters&nbsp;<span id="last-char" class:rotated={rotated}>&gt;</span>
 </div>
 
+<div id="checkbox-container">
+  <label><input type="checkbox" name="filter" value="date"> By Date</label><br>
+  <label><input type="checkbox" name="filter" value="province"> By Province</label>
+</div>
+
 <style>
-    
+     #checkbox-container {
+    margin-top: 10px;
+    z-index: 10;
+  }
+
+  #checkbox-container.show {
+    display: block;
+  }
+
     #last-char {
   display: inline-block;
   transition: transform 0.3s ease;
