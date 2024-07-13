@@ -14,23 +14,21 @@
 
         map = new mapboxgl.Map({
             container: "map",
-            center: [0, 0],
-            zoom: 2
+            center: [-85, 59],
+            zoom: 3,
         });
     });
 </script>
 
-<div id="map">
-
-</div>
+<div id="map"></div>
 
 <style>
     #map {
         position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         z-index: 1;
     }
 </style>
