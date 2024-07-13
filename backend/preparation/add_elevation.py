@@ -86,4 +86,14 @@ if __name__ == "__main__":
                         help="The number of minutes to wait after every batch_limit batches. Defaults to 10.")
     
     args = parser.parse_args()
-    add_elevation(dfs, args.start_index, args.batch_limit, args.wait_minutes)
+    # add_elevation(dfs, args.start_index, args.batch_limit, args.wait_minutes)
+
+    response = requests.get(
+        url,
+        headers={
+            "x-api-key": API_KEY,
+            "Content-Type": "application/json"
+        },
+        data="latlons=45.4215,-75.6972|45.4215,-75.6972&interpolation=nearest"
+    )
+    print(response.json())

@@ -22,8 +22,6 @@
     "vite": "^5.3.1"
   },
   "dependencies": {
-    "flowbite": "^2.4.1",
-    "flowbite-svelte": "^0.46.14",
     "mapbox-gl": "^3.5.1"
   }
 }

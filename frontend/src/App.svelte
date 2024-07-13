@@ -1,12 +1,16 @@
 <script lang="ts">
-  import Footer from "./lib/Footer.svelte";
+  import Button from "./lib/MapBox/Button.svelte";
   import Map from "./lib/MapBox/Map.svelte";
-  import Navbar from "./lib/Navbar.svelte";
+  import Filters from "./lib/MapBox/Filters.svelte";
 </script>
 
-<Navbar />
 <main>
-  <h1>Sample Mapbox-Gl Map</h1>
-  <!-- <Map /> -->
+  <h1>
+    <img src="logo.png" alt="Icon" class="icon" />
+    Fire Guard
+  </h1>
+  
+  
+  <Map />
+  <Filters />
 </main>
-<Footer />

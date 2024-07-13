@@ -14,8 +14,8 @@
 
         map = new mapboxgl.Map({
             container: "map",
-            center: [2.3522, 48.8566],
-            zoom: 12,
+            center: [0, 0],
+            zoom: 2
         });
     });
 </script>
@@ -26,8 +26,11 @@
 
 <style>
     #map {
-        height: 100%;
-        min-height: 100vh;
-        width: 100%;
+        position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+        z-index: 1;
     }
 </style>
