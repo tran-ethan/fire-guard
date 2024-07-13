@@ -1,8 +1,14 @@
 <script>
+    let name = 'Anais';
     function changeName() {
-        
+        if(name === 'Anais'){
+            name = 'Parsa';
+        }
+        else{
+            name = 'Anais';
+        }
     }
-    let name = "Anais";
+    
 </script>
 
 <div>
