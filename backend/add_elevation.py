@@ -4,7 +4,7 @@ import requests
 import argparse
 import time
 
-API_KEY = "ak_4xd9pBKL_M5J49F0WOU7ZIxdV"
+API_KEY = "ak_gH6eks2O_vSI1EOtHZEc2pu6y"
 BASE_URL = "https://api.gpxz.io/v1/elevation/points"
 
 def add_elevation_column(df: pd.DataFrame,  header: bool = False):
@@ -51,17 +51,14 @@ def add_elevation(dfs: list[pd.DataFrame], start_index: int = 0, batch_limit: in
     Returns:
         None
     """
-    if start_index == 0:
-        print("Adding altitude to the dataset...")
-        print("Adding altitude to batch 1...")
-        add_elevation_column(dfs[0], header=True)
-        print("Batch 1 complete")
-        start_index += 1
 
     for df in dfs[start_index:]:
         
         print(f"Adding altitude to batch {start_index}...")
-        add_elevation_column(df)
+        if start_index == 0:
+            add_elevation_column(df, header=True)
+        else:
+            add_elevation_column(df)
         print(f"Batch {start_index} complete\n")
         start_index += 1
         time.sleep(wait_minutes * 60)
@@ -71,29 +68,24 @@ def add_elevation(dfs: list[pd.DataFrame], start_index: int = 0, batch_limit: in
             print(f"Waiting for {wait_minutes} minutes in order to avoid rate limiting...")
 
 # Load the data
-dataset = pd.read_csv("1950-2021_fires.csv")
 #Split the df into batches of 50 data points
 batch_size = 50
-dfs = np.array_split(dataset, len(dataset) // batch_size)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Add elevation to the dataset using the Canada elevation API.")
+    parser.add_argument("--path", type=str, default="./data/1950-2021_fires.csv",
+                        help="The path to the dataset. Defaults to ./data/1950-2021_fires.csv.")
+    parser.add_argument("--path-out", type=str, default="./data/1950-2021_fires_with_elevation.csv",
+                        help="The path to save the dataset with elevation. Defaults to ./data/1950-2021_fires_with_elevation.csv.")
     parser.add_argument("--start-index", type=int, default=0,
                         help="The index to start from. Defaults to 0.")
     parser.add_argument("--batch-limit", type=int, default=1,
-                        help="The number of batches to do before waiting. Defaults to 10.")
-    parser.add_argument("--wait-minutes", type=int, default=10,
-                        help="The number of minutes to wait after every batch_limit batches. Defaults to 10.")
+                        help="The number of batches to do before waiting. Defaults to 1.")
+    parser.add_argument("--wait-minutes", type=int, default=0,
+                        help="The number of minutes to wait after every batch_limit batches. Defaults to 0.")
     
     args = parser.parse_args()
-    # add_elevation(dfs, args.start_index, args.batch_limit, args.wait_minutes)
 
-    response = requests.get(
-        url,
-        headers={
-            "x-api-key": API_KEY,
-            "Content-Type": "application/json"
-        },
-        data="latlons=45.4215,-75.6972|45.4215,-75.6972&interpolation=nearest"
-    )
-    print(response.json())
+    dataset = pd.read_csv(args.path)
+    dfs = np.array_split(dataset, len(dataset) // batch_size)
+    add_elevation(dfs, args.start_index, args.batch_limit, args.wait_minutes)
