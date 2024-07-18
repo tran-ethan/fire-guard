@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte";
   import flatpickr from "flatpickr";
   import "flatpickr/dist/flatpickr.min.css";
@@ -40,12 +40,22 @@
 
   function byDateChecked() {
     dateChecked = !dateChecked;
+    if(dateChecked){
+      initializeFlatpickr();
+    }
+    
+   
+  }
+  function initializeFlatpickr(){
+    flatpickr("#start-date", { dateFormat: "Y-m-d" });
+    flatpickr("#end-date", { dateFormat: "Y-m-d" });
   }
   function byProvinceChecked() {
     provinceChecked = !provinceChecked;
   }
 
   function filterProvinces() {}
+ 
 </script>
 
 <div id="filters" class="filters" on:click={toggleRotation}>
@@ -71,7 +81,7 @@
         id="start-date"
         placeholder="Start Date"
         class="text-field"
-        readonly
+        on:click={initializeFlatpickr()}
       />
       to
       <input
@@ -80,7 +90,7 @@
         id="end-date"
         placeholder="End Date"
         class="text-field"
-        readonly
+        
       />
     </div>
   {/if}
@@ -181,9 +191,6 @@
     content: "";
 
     background-color: white;
-    /* content: ' ';
-        background-color: rgba(180, 159, 155, 0.895);
-        border-color: rgba(180, 159, 155, 0.895); */
   }
 
   .checkbox-container.show {
@@ -218,7 +225,7 @@
   }
   #text-field-province{
     width: 140px;
-    margin-left: -150px;
+    margin-left: 0px;
   }
   
 
@@ -249,7 +256,9 @@
   .province-list li:hover {
     background-color: rgba(180, 159, 155, 0.2);
   }
-  /* Show the dropdown content when input is focused */
+  .flatpickr-calendar {
+    z-index: 9999;
+  }
 #text-field-province:focus + .dropdown-content {
     display: block;
 }
