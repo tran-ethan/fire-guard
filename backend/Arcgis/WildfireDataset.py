@@ -40,7 +40,6 @@ def getDataset():
             break
 
     if (wildfire_item):
-        wildfire_title = wildfire_item.title
 
         wildfire_layer = None
 
@@ -74,7 +73,7 @@ def getDataset():
                 if query_result.features:
                     # Convert the result to a pandas DataFrame
                     df = pd.DataFrame(query_result.features)
-                    csv_file_path = os.path.join("data", f"{wildfire_title}.csv")
+                    csv_file_path = os.path.join("data", "rawData.csv")
                     df.to_csv(csv_file_path, index=False)  # Convert the pandas DataFrame to a csv
                     return df
                     print("Sucessfully downloaded the dataset")
@@ -102,59 +101,105 @@ def cleanDataset(data):
     attributesData = [cleanedDict["features"][i] for i in range(len(cleanedDict['features']))]
 
     df = pd.DataFrame(attributesData)
-    df = df.drop(['Agency', 'Fire_Name', 'ObjectId', 'GlobalID'], axis=1)
-    df.rename(columns={'Hectares__Ha_': 'Hectares'}, inplace=True)
-    df.rename(columns={'Stage_of_Control': 'Stage of Control'}, inplace=True)
+    df = df.drop(['Agency', 'Fire_Name', 'ObjectId', 'GlobalID', 'Stage_of_Control', 'Time_Zone'], axis=1)
+    df.rename(columns={'Hectares__Ha_': 'hectares'}, inplace=True)
+    df.rename(columns={'Latitude': 'lat'}, inplace=True)
+    df.rename(columns={'Longitude': 'lon'}, inplace=True)
     df['Start_Date'] = df['Start_Date'].astype(str)
 
     # format the time to datetime and timezone to utc
     for x in df.index:
         unixTime = int(df.loc[x, "Start_Date"])
-        timezone = df.loc[x, "Time_Zone"]
         dtTime = convertDate(unixTime)
-        utcTime = convertTimezone(timezone, dtTime)
-        df.loc[x, "Start_Date"] = utcTime
+        df.loc[x, "Start_Date"] = dtTime
 
-    df = df.drop(['Time_Zone'], axis=1)
-    df.rename(columns={'Start_Date': 'Start Date (UTC)'}, inplace=True)
+    df.rename(columns={'Start_Date': 'start_date_utc'}, inplace=True)
 
     return df
 
 def addWeatherData(df):
 
-    # Create new columns
+    # Specify the number of days for the forecast
+    days = 14
 
-    df["Temperature (°C)"] = 0.0
-    df["Wind speed (kph)"] = 0.0
-    df["Wind direction"] = ""
-    df["Precipitation (mm)"] = 0.0
-    df["humidity"] = 0
+    # Create a dictionary to hold new column data
+    new_columns = {
+        "condition": [],
+        "temp_c": [],
+        "wind_kph": [],
+        "wind_dir": [],
+        "precip_mm": [],
+        "humidity": [],
+    }
+
+    # Add forecast columns for each day
+    for i in range(1, days + 1):
+        new_columns[f"condition_f{i}"] = []
+        new_columns[f"maxtemp_c_f{i}"] = []
+        new_columns[f"avgtemp_c_f{i}"] = []
+        new_columns[f"maxwind_kph_f{i}"] = []
+        new_columns[f"totalprecip_mm_f{i}"] = []
+        new_columns[f"totalsnow_cm_f{i}"] = []
+        new_columns[f"avghumidity_f{i}"] = []
+        new_columns[f"daily_will_it_rain_f{i}"] = []
+        new_columns[f"daily_will_it_snow_f{i}"] = []
 
     # For each row, add weather data
-
     for x in df.index:
-        lat = df.loc[x, "Latitude"]
-        long = df.loc[x, "Longitude"]
-        url = f"http://api.weatherapi.com/v1/current.json?key={apiKey}&q={lat},{long}"
+        lat = df.loc[x, "lat"]
+        lon = df.loc[x, "lon"]
+        url = f"http://api.weatherapi.com/v1/forecast.json?key={apiKey}&q={lat},{lon}&days={days}"
         response = requests.get(url)
 
         # Check if the request was successful
         if response.status_code == 200:
             data = response.json()
 
-            temp_c = data["current"]["temp_c"]
-            wind_kph = data["current"]["wind_kph"]
-            wind_dir = data["current"]["wind_dir"]
-            precip_mm = data["current"]["precip_mm"]
-            humidity =  data["current"]["humidity"]
+            # Current weather data
+            new_columns["condition"].append(data["current"]["condition"]["text"])
+            new_columns["temp_c"].append(data["current"]["temp_c"])
+            new_columns["wind_kph"].append(data["current"]["wind_kph"])
+            new_columns["wind_dir"].append(data["current"]["wind_dir"])
+            new_columns["precip_mm"].append(data["current"]["precip_mm"])
+            new_columns["humidity"].append(data["current"]["humidity"])
 
-            df.loc[x, "Temperature (°C)"] = temp_c
-            df.loc[x, "Wind speed (kph)"] = wind_kph
-            df.loc[x, "Wind direction"] = wind_dir
-            df.loc[x, "Precipitation (mm)"] = precip_mm
-            df.loc[x, "humidity"] = humidity
+            # Forecast data
+            for i in range(len(data["forecast"]["forecastday"])):
+                rowData = data["forecast"]["forecastday"][i]["day"]
+                new_columns[f"condition_f{i+1}"].append(rowData["condition"]["text"])
+                new_columns[f"maxtemp_c_f{i+1}"].append(rowData["maxtemp_c"])
+                new_columns[f"avgtemp_c_f{i+1}"].append(rowData["avgtemp_c"])
+                new_columns[f"maxwind_kph_f{i+1}"].append(rowData["maxwind_kph"])
+                new_columns[f"totalprecip_mm_f{i+1}"].append(rowData["totalprecip_mm"])
+                new_columns[f"totalsnow_cm_f{i+1}"].append(rowData["totalsnow_cm"])
+                new_columns[f"avghumidity_f{i+1}"].append(rowData["avghumidity"])
+                new_columns[f"daily_will_it_rain_f{i+1}"].append(rowData["daily_will_it_rain"])
+                new_columns[f"daily_will_it_snow_f{i+1}"].append(rowData["daily_will_it_snow"])
         else:
             print("Error:", response.status_code, response.text)
+            new_columns["condition"].append("")
+            new_columns["temp_c"].append(0.0)
+            new_columns["wind_kph"].append(0.0)
+            new_columns["wind_dir"].append("")
+            new_columns["precip_mm"].append(0.0)
+            new_columns["humidity"].append(0)
+
+            for i in range(1, days + 1):
+                new_columns[f"condition_f{i}"].append("")
+                new_columns[f"maxtemp_c_f{i}"].append(0.0)
+                new_columns[f"avgtemp_c_f{i}"].append(0.0)
+                new_columns[f"maxwind_kph_f{i}"].append(0.0)
+                new_columns[f"totalprecip_mm_f{i}"].append(0.0)
+                new_columns[f"totalsnow_cm_f{i}"].append(0.0)
+                new_columns[f"avghumidity_f{i}"].append(0.0)
+                new_columns[f"daily_will_it_rain_f{i}"].append(0.0)
+                new_columns[f"daily_will_it_snow_f{i}"].append(0.0)
+
+    # Create a new DataFrame for the new columns
+    weather_df = pd.DataFrame(new_columns, index=df.index)
+
+    # Concatenate the original DataFrame with the new columns DataFrame
+    df = pd.concat([df, weather_df], axis=1)
 
     return df
 
@@ -184,20 +229,24 @@ if __name__ == "__main__":
 
     if (res is not None):
 
-        df = pd.read_csv("data/Active Wildfires in Canada.csv")
+        # Getting the dataset
+        df = pd.read_csv("data/rawData.csv")
         jsonData = df.to_json(orient='records')
         dictData = json.loads(jsonData)
 
+        # Cleaning the dataset
         print("Cleaning the data")
         df = cleanDataset(dictData)
         print("cleaning done")
 
+        # Adding weather data
         print("Adding weather data...")
         df = addWeatherData(df)
 
+        # Writing df as csv
         print("Writing df as csv...")
-        os.remove("data/Active Wildfires in Canada.csv")
+        os.remove("data/rawData.csv")
         current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        csv_file_path = os.path.join("data", f"Active Wildfires in Canada ({current_time}).csv")
+        csv_file_path = os.path.join("data", f"Active_Fires.csv")
         df.to_csv(csv_file_path, index=False)  # Convert the pandas DataFrame to a csv
         print("Done!")
