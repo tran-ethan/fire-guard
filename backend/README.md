@@ -23,3 +23,14 @@ After installing your own dependencies, update requirements.txt
 ```bash
 pip freeze > requirements.txt
 ```
+
+## Scripts
+
+### Add to Firestore 
+General python script that adds a csv to Firestore.
+Specify the path to the csv, the collection name and the path to the firestore credentials file located on your local machine.
+
+Example usage:
+```bash
+python add_to_firestore.py --path data/wildfires.csv --collection wildfires --path-to-credentials credentials.json
+```
