@@ -7,7 +7,7 @@ import os
 from datetime import datetime, timedelta
 import pytz
 
-apiKey = "edea8cd8a2ba480586e215247241107"
+apiKey = os.getenv("WEATHER_API_KEY")
 
 timezoneDict = {
     'MDT': 'America/Denver', # UTC-6
