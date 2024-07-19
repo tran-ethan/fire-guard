@@ -113,7 +113,7 @@ def cleanDataset(data):
         dtTime = convertDate(unixTime)
         df.loc[x, "Start_Date"] = dtTime
 
-    df.rename(columns={'Start_Date': 'start_date_utc'}, inplace=True)
+    df.rename(columns={'Start_Date': 'date'}, inplace=True)
 
     return df
 
@@ -246,7 +246,6 @@ if __name__ == "__main__":
         # Writing df as csv
         print("Writing df as csv...")
         os.remove("data/rawData.csv")
-        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        csv_file_path = os.path.join("data", f"Active_Fires.csv")
+        csv_file_path = os.path.join("data", "Active_Fires.csv")
         df.to_csv(csv_file_path, index=False)  # Convert the pandas DataFrame to a csv
         print("Done!")
