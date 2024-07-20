@@ -47,8 +47,8 @@
    
   }
   function initializeFlatpickr(){
-    flatpickr("#start-date", { dateFormat: "Y-m-d" });
-    flatpickr("#end-date", { dateFormat: "Y-m-d" });
+    flatpickr("#start-date", { dateFormat: "d/m/Y" });
+    flatpickr("#end-date", { dateFormat: "d/m/Y" });
   }
   function byProvinceChecked() {
     provinceChecked = !provinceChecked;
