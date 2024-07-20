@@ -28,6 +28,10 @@ def add_row_to_batch(index: int, row: pd.Series, batch: firestore.WriteBatch, co
         ref = db.collection(collection).document()
         data = {key: value for key, value in row.items()}
 
+        # if date key is present, convert it to a Firestore timestamp
+        if "date" in data:
+            data["date"] = pd.to_datetime(data["date"])
+
         # Set data for the document in the batch operation
         batch.set(ref, data)
 
