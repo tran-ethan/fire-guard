@@ -3,8 +3,12 @@ import numpy as np
 import requests
 import argparse
 import time
+from dotenv import load_dotenv
+import os
 
-API_KEY = "ak_gH6eks2O_vSI1EOtHZEc2pu6y"
+load_dotenv()
+
+API_KEY = os.getenv("ELEVATION_API_KEY")
 BASE_URL = "https://api.gpxz.io/v1/elevation/points"
 
 def add_elevation_column(df: pd.DataFrame,  header: bool = False):
