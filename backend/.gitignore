@@ -1,3 +1,5 @@
 venv/
 elevation-credentials.json
 firebase-credentials.json
+
+.env
