@@ -33,7 +33,6 @@ def getDataset():
     searchRes= gis.content.search(query="Active Wildfires in Canada", item_type="Feature Layer", max_items=10)
     wildfire_item = None
 
-
     for item in searchRes:
         if (item.title == "Active Wildfires in Canada"):
             wildfire_item = item
@@ -195,6 +194,10 @@ def addWeatherData(df):
                 new_columns[f"daily_will_it_rain_f{i}"].append(0.0)
                 new_columns[f"daily_will_it_snow_f{i}"].append(0.0)
 
+        percentage = (x + 1) / len(df) * 100
+        print(f"{percentage:.2f}% done")
+
+
     # Create a new DataFrame for the new columns
     weather_df = pd.DataFrame(new_columns, index=df.index)
 
@@ -210,16 +213,12 @@ def convertDate(time):
     return dtObj.strftime('%Y-%m-%d %H:%M:%S')
 
 def convertTimezone(timezone, time):
+
     timezoneName = pytz.timezone(timezoneDict[timezone])
-
     timeFormat = "%Y-%m-%d %H:%M:%S"
-
     dtObj = datetime.strptime(time, timeFormat)
-
     localTime = timezoneName.localize(dtObj)
-
     utcTime = localTime.astimezone(pytz.utc).strftime('%Y-%m-%d %H:%M:%S')
-
     return utcTime
 
 if __name__ == "__main__":
@@ -231,21 +230,38 @@ if __name__ == "__main__":
 
         # Getting the dataset
         df = pd.read_csv("data/rawData.csv")
+        print(str(len(df)) + " rows of data found", end="\n\n")
         jsonData = df.to_json(orient='records')
         dictData = json.loads(jsonData)
 
         # Cleaning the dataset
-        print("Cleaning the data")
+        print("Cleaning the data...")
         df = cleanDataset(dictData)
-        print("cleaning done")
+        print("Cleaning done", end="\n\n")
 
         # Adding weather data
         print("Adding weather data...")
         df = addWeatherData(df)
+        df = df.dropna(how='all')
+        print()
 
         # Writing df as csv
         print("Writing df as csv...")
         os.remove("data/rawData.csv")
+        currentLength = len(df)
+        existing_df = pd.read_csv("data/Active_Fires.csv")
+        merged_df = pd.concat([df, existing_df], axis=0, ignore_index=True)
+        dfLength = len(merged_df)
+        merged_df = merged_df.drop_duplicates()
+        newDfLength = len(merged_df)
+        numDuplicates = dfLength - newDfLength
+        print(f"Duplicates removed: {numDuplicates}")
         csv_file_path = os.path.join("data", "Active_Fires.csv")
-        df.to_csv(csv_file_path, index=False)  # Convert the pandas DataFrame to a csv
+        merged_df.to_csv(csv_file_path, index=False)  # Convert the pandas DataFrame to a csv
+        print("Added data:")
+        numNewData = currentLength - numDuplicates
+        if (numNewData > 0):
+            print(merged_df.tail(currentLength-numDuplicates))
+        else:
+            print("No data added")
         print("Done!")
