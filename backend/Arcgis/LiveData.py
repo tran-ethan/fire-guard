@@ -119,7 +119,7 @@ def cleanDataset(data):
 def addWeatherData(df):
 
     # Specify the number of days for the forecast
-    days = 14
+    days = 3
 
     # Create a dictionary to hold new column data
     new_columns = {
@@ -242,7 +242,7 @@ if __name__ == "__main__":
         # Adding weather data
         print("Adding weather data...")
         df = addWeatherData(df)
-        df = df.dropna(how='all')
+        df = df.dropna(how='any')
         print()
 
         # Writing df as csv
