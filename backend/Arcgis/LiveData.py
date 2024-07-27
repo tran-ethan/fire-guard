@@ -242,13 +242,15 @@ if __name__ == "__main__":
         # Adding weather data
         print("Adding weather data...")
         df = addWeatherData(df)
+        lenNa = len(df)
         df = df.dropna(how='any')
+        currentLength = len(df)
+        numNa = lenNa - currentLength
         print()
 
         # Writing df as csv
         print("Writing df as csv...")
         os.remove("data/rawData.csv")
-        currentLength = len(df)
         existing_df = pd.read_csv("data/Active_Fires.csv")
         merged_df = pd.concat([df, existing_df], axis=0, ignore_index=True)
         dfLength = len(merged_df)
@@ -256,6 +258,7 @@ if __name__ == "__main__":
         newDfLength = len(merged_df)
         numDuplicates = dfLength - newDfLength
         print(f"Duplicates removed: {numDuplicates}")
+        print(f"Null values removed: {numNa}")
         csv_file_path = os.path.join("data", "Active_Fires.csv")
         merged_df.to_csv(csv_file_path, index=False)  # Convert the pandas DataFrame to a csv
         print("Added data:")
