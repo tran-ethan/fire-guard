@@ -4,7 +4,7 @@ import json
 import traceback
 import pandas as pd
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 import pytz
 
 apiKey = os.getenv("WEATHER_API_KEY")
