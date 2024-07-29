@@ -3,21 +3,25 @@ Data processing part of the Fire Guard web application.
 
 ## How to get started
 
-1. Initialize python virtual environment
-```bash
-python3 -m venv venv
-```
+1. **Install conda**
+    [https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html#regular-installation](https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html#regular-installation)
 
-2. Activate virtual environment
-```bash
-source venv/bin/activate # Linux / MacOS
-venv\Scripts\activate # Windows
-```
 
-3. Install dependencies
-```bash
-pip install -r requirements.txt
-```
+2. **Create an environment**
+    ```bash
+    conda create --name <EnvName>
+    ```
+
+3. **Activate your environment**
+    ```bash
+    conda activate <EnvName>
+    ```
+
+4. **Install the ArcGIS API for Python**
+    ```bash
+    conda install -c esri arcgis
+    ```
+    
 
 After installing your own dependencies, update requirements.txt
 ```bash
