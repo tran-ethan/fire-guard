@@ -22,7 +22,7 @@ Data processing part of the Fire Guard web application.
     conda install -c esri arcgis
     ```
 5. **Install the additional packages**
-     ```bash
+    ```bash
     pip install firebase_admin
     pip install google-cloud-firestore
     ```

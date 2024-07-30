@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import time
 import argparse
+import os
 
 LIMIT = 20000 # The limit of documents to write in a single batch operation
 DAY = 86400 # The number of seconds in a day
@@ -75,10 +76,13 @@ def add_dataset_to_firestore(dataset: pd.DataFrame, collection: str = "wildfires
 
 
 if __name__ == "__main__":
+
+    cred = os.getenv("PATH_TO_CREDENTIALS")
+
     parser = argparse.ArgumentParser(description="Add data to Firestore.")
     parser.add_argument("--path", type=str, default="./data/2000-2021+2023-2024.csv",
                         help="The path to the dataset. Defaults to ./data/2000-2021+2023-2024.csv.")
-    parser.add_argument("--path-to-credentials", type=str, default="./firebase-credentials.json",
+    parser.add_argument("--path-to-credentials", type=str, default=cred,
                         help="The path to the Firebase credentials. Defaults to ./firebase-credentials.json.")
     parser.add_argument("--collection", type=str, default="wildfires",
                         help="The collection to add the data to. Defaults to 'wildfires'.")
@@ -93,4 +97,4 @@ if __name__ == "__main__":
     dataset = pd.read_csv(args.path)
     collection = args.collection
     
-    add_dataset_to_firestore(dataset, collection)
+    #add_dataset_to_firestore(dataset, collection)
