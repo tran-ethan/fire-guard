@@ -259,12 +259,13 @@ if __name__ == "__main__":
         numDuplicates = dfLength - newDfLength
         print(f"Duplicates removed: {numDuplicates}")
         print(f"Null values removed: {numNa}")
-        csv_file_path = os.path.join("data", "Active_Fires.csv")
-        merged_df.to_csv(csv_file_path, index=False)  # Convert the pandas DataFrame to a csv
-        print("Added data:")
         numNewData = currentLength - numDuplicates
+        newDf = merged_df.tail(currentLength-numDuplicates)
+        csv_file_path = os.path.join("data", "Active_Fires.csv")
+        newDf.to_csv(csv_file_path, index=False)  # Convert the pandas DataFrame to a csv
+        print("Added data:")
         if (numNewData > 0):
-            print(merged_df.tail(currentLength-numDuplicates))
+            print(newDf)
         else:
             print("No data added")
         print("Done!")
