@@ -1,7 +1,17 @@
 <script lang="ts">
-  import Button from "./lib/MapBox/Button.svelte";
-  import Map from "./lib/MapBox/Map.svelte";
-  import Filters from "./lib/MapBox/Filters.svelte";
+  import Map from "./components/Map.svelte";
+  import Filters from "./components/Filters.svelte";
+  import { onMount } from "svelte";
+  import { getWildFire } from "./lib/wildfires";
+
+  onMount(async () => {
+    try {
+      const fire = await getWildFire("0jvL5inL2advNxnbz13c");
+      console.log(fire);
+    } catch (error) {
+      console.error(error);
+    }
+  });
 </script>
 
 <main>
@@ -9,8 +19,7 @@
     <img src="logo.png" alt="Icon" class="icon" />
     Fire Guard
   </h1>
-  
-  
+
   <Map />
   <Filters />
 </main>
