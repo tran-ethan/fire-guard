@@ -251,10 +251,11 @@ if __name__ == "__main__":
         # Writing df as csv
         print("Writing df as csv...")
         os.remove("data/rawData.csv")
-        existing_df = pd.read_csv("data/Active_Fires.csv")
+        existing_df = pd.read_csv("data/Previous_Fires.csv")
         merged_df = pd.concat([df, existing_df], axis=0, ignore_index=True)
         dfLength = len(merged_df)
         merged_df = merged_df.drop_duplicates()
+        merged_df.to_csv("data/Previous_Fires.csv", index=False)
         newDfLength = len(merged_df)
         numDuplicates = dfLength - newDfLength
         print(f"Duplicates removed: {numDuplicates}")
