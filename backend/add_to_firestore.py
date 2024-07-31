@@ -55,16 +55,16 @@ def add_dataset_to_firestore(dataset: pd.DataFrame, collection: str):
     """
 
     if (len(dataset) > LIMIT):
-        number_of_dfs = len(dataset) // LIMIT
-        dfs: list[pd.DataFrame]= np.array_split(dataset, number_of_dfs)
+        number_of_dfs = len(dataset) // LIMIT + 1
+        dfs: list[pd.DataFrame] = np.array_split(dataset, number_of_dfs)
     else:
-        dfs: list[pd.DataFrame]= np.array(dataset)
+        dfs: list[pd.DataFrame] = [dataset]
 
-    for df in reversed(dfs):
+    for df in dfs:
         batch = db.batch()
         count = 0
         for index, row in df.iterrows():
-            if count % BATCH_SIZE == 0:
+            if count % BATCH_SIZE == 0 and count > 0:
                 batch.commit()
                 print("Batch operation committed successfully.")
                 batch = db.batch()
