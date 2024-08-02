@@ -100,7 +100,7 @@ def cleanDataset(data):
     attributesData = [cleanedDict["features"][i] for i in range(len(cleanedDict['features']))]
 
     df = pd.DataFrame(attributesData)
-    df = df.drop(['Agency', 'Fire_Name', 'ObjectId', 'GlobalID', 'Stage_of_Control', 'Time_Zone'], axis=1)
+    df = df.drop(['Agency', 'Fire_Name', 'ObjectId', 'GlobalID', 'Stage_of_Control'], axis=1)
     df.rename(columns={'Hectares__Ha_': 'hectares'}, inplace=True)
     df.rename(columns={'Latitude': 'lat'}, inplace=True)
     df.rename(columns={'Longitude': 'lon'}, inplace=True)
