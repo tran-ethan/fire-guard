@@ -1,8 +1,8 @@
 <script lang="ts">
   import Map from "./components/Map.svelte";
-  import Filters from "./components/Filters.svelte";
   import { onMount } from "svelte";
   import { getWildFire } from "./lib/wildfires";
+  import Navbar from "./components/Navbar.svelte";
 
   onMount(async () => {
     try {
@@ -15,11 +15,6 @@
 </script>
 
 <main>
-  <h1>
-    <img src="logo.png" alt="Icon" class="icon" />
-    Fire Guard
-  </h1>
-
+  <Navbar />
   <Map />
-  <Filters />
 </main>
