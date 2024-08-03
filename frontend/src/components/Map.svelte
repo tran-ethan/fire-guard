@@ -1,9 +1,7 @@
 <script lang="ts">
   import mapboxgl from "mapbox-gl";
   import { onMount } from "svelte";
-  mapboxgl.accessToken =
-    "pk.eyJ1IjoicGFyc2FqYWZhcmlhbiIsImEiOiJjbHhxbDljdzYwY2ZpMmxwbnR1dTQ2YThyIn0.4zJwGh7wfpqCorynBky0DQ";
-
+  mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string;
   let map: mapboxgl.Map;
 
   onMount(() => {
@@ -25,6 +23,24 @@
     ];
     // Set the map's max bounds.
     map.setMaxBounds(bounds as mapboxgl.LngLatBoundsLike);
+
+    // // Example point data
+    // const points = [
+    //   { coordinates: [45.5017, -73.5673], description: "Point 1" },
+    //   { coordinates: [-74.6, 40.1], description: "Point 2" },
+    //   { coordinates: [-74.4, 40.2], description: "Point 3" },
+    // ];
+
+    // // Add points as markers to the map
+    // points.forEach((point) => {
+    //   const el = document.createElement("div");
+    //   el.className = "marker";
+
+    //   new mapboxgl.Marker(el)
+    //     .setLngLat(point.coordinates as mapboxgl.LngLatLike)
+    //     .setPopup(new mapboxgl.Popup({ offset: 25 }).setText(point.description)) // add popups
+    //     .addTo(map);
+    // });
   });
 </script>
 
