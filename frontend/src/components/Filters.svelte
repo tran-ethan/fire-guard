@@ -55,9 +55,7 @@
 </script>
 
 <div id="filters" class="filters" on:click={toggleRotation}>
-  <h3 class="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold">
-    Filters&nbsp;<span id="last-char" class:rotated>&gt;</span>
-  </h3>
+  Filters&nbsp;<span id="last-char" class:rotated>&gt;</span>
 </div>
 
 <div class="checkbox-container {rotated ? 'show' : ''}">
