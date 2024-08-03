@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import flatpickr from "flatpickr";
   import "flatpickr/dist/flatpickr.min.css";
   let rotated = false;
@@ -9,7 +8,7 @@
   let endDate = "";
   let provinceInput = "";
 
-  let filteredProvinces = [
+  const filteredProvinces = [
     "Alberta",
     "British Columbia",
     "Manitoba",
@@ -40,13 +39,11 @@
 
   function byDateChecked() {
     dateChecked = !dateChecked;
-    if(dateChecked){
+    if (dateChecked) {
       initializeFlatpickr();
     }
-    
-   
   }
-  function initializeFlatpickr(){
+  function initializeFlatpickr() {
     flatpickr("#start-date", { dateFormat: "d/m/Y" });
     flatpickr("#end-date", { dateFormat: "d/m/Y" });
   }
@@ -55,11 +52,12 @@
   }
 
   function filterProvinces() {}
- 
 </script>
 
 <div id="filters" class="filters" on:click={toggleRotation}>
-  Filters&nbsp;<span id="last-char" class:rotated>&gt;</span>
+  <h3 class="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold">
+    Filters&nbsp;<span id="last-char" class:rotated>&gt;</span>
+  </h3>
 </div>
 
 <div class="checkbox-container {rotated ? 'show' : ''}">
@@ -81,7 +79,7 @@
         id="start-date"
         placeholder="Start Date"
         class="text-field"
-        on:click={initializeFlatpickr()}
+        on:click={initializeFlatpickr}
       />
       to
       <input
@@ -90,7 +88,6 @@
         id="end-date"
         placeholder="End Date"
         class="text-field"
-        
       />
     </div>
   {/if}
@@ -223,11 +220,10 @@
       border-color 0.2s ease,
       box-shadow 0.2s ease;
   }
-  #text-field-province{
+  #text-field-province {
     width: 140px;
     margin-left: 0px;
   }
-  
 
   .by-province-dropdown {
     position: relative;
@@ -259,7 +255,7 @@
   .flatpickr-calendar {
     z-index: 9999;
   }
-#text-field-province:focus + .dropdown-content {
+  #text-field-province:focus + .dropdown-content {
     display: block;
-}
+  }
 </style>
