@@ -1,0 +1,2 @@
+lat,lon,date,hectares,elevation,temp_c,max_temp_c,min_temp_c,wind_kph,wind_dir,precip_mm,humidity,pressure_hPa,soil_temp_c,soil_moisture,totalsnow_cm
+50.905,-126.9292,2000-03-10,6.0,81.0,5.074,8.354,2.654,28.385,102.225,0.0,75.693,1008.186,4.566,0.322,0.0
