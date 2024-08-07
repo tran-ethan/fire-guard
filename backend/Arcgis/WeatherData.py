@@ -5,7 +5,7 @@ import requests
 import os
 import time
 
-df = pd.read_csv("data/2000-2024_fires.csv")
+df = pd.read_csv("data/2000-2021_nofires.csv")
 INSTANCE = 2
 df = np.array_split(df, 6)[INSTANCE]
 start_index = df.index[0]
@@ -100,7 +100,7 @@ for x in df.index:
     df_rows = df.iloc[:index+1]
     new_columns_df = pd.DataFrame(new_columns, index=df_rows.index)
     combined_df = pd.concat([df_rows, new_columns_df], axis=1)
-    combined_df.to_csv("data/2000-2024_fires+weather.csv", index=False)
+    combined_df.to_csv("data/2000-2021_nofires+weather.csv", index=False)
 
     percentage = (index + 1) / len(df) * 100
     print(f"Instance: {INSTANCE}, {percentage:.3f}% done")
@@ -108,5 +108,5 @@ for x in df.index:
 
 weather_df = pd.DataFrame(new_columns, index=df.index)
 df = pd.concat([df, weather_df], axis=1)
-df.to_csv("data/2000-2024_fires+weather.csv", index=False)
+df.to_csv("data/2000-2021_nofires+weather.csv", index=False)
 print("done")
