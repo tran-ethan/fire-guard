@@ -7,7 +7,7 @@ import time
 
 df = pd.read_csv("data/2000-2021_nofires.csv")
 INSTANCE = 2
-df = np.array_split(df, 6)[INSTANCE]
+df = np.array_split(df, 5)[INSTANCE]
 start_index = df.index[0]
 
 # Create a dictionary to hold new column data
