@@ -6,7 +6,7 @@ import os
 import time
 
 df = pd.read_csv("data/2000-2024_fires.csv")
-INSTANCE = 3
+INSTANCE = 2
 df = np.array_split(df, 6)[INSTANCE]
 start_index = df.index[0]
 
