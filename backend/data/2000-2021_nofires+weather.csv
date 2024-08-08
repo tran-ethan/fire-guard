@@ -1,0 +1,2 @@
+lat,lon,date,hectares,elevation,elevation,temp_c,max_temp_c,min_temp_c,wind_kph,wind_dir,precip_mm,humidity,pressure_hPa,soil_temp_c,soil_moisture,totalsnow_cm
+51.1209,-118.3741,2008-06-18,0.009,1660.0,1660.0,7.611,11.503,3.653,11.384,217.432,1.4,49.536,834.161,6.066,0.267,0.0
