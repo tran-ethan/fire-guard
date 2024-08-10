@@ -17,10 +17,12 @@ export type WildFire = {
     hectares: number;
 }
 
+const collectionName = "livedata";
+
 export async function getWildFire(id: string) {
-    return await getDocumentData<WildFire>("wildfires", id);
+    return await getDocumentData<WildFire>(collectionName, id);
 }
 
 export async function getWildFires(...constraints: QueryFieldFilterConstraint[]) {
-    return await getDocumentDatas<WildFire>("wildfires", ...constraints);
+    return await getDocumentDatas<WildFire>(collectionName, ...constraints);
 }

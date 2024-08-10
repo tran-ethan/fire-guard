@@ -1,10 +1,12 @@
 <script lang="ts">
   import mapboxgl from "mapbox-gl";
   import { onMount } from "svelte";
+  import { createFireMarker } from "../lib/utils";
+  import { getWildFires } from "../lib/wildfires";
   mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string;
   let map: mapboxgl.Map;
 
-  onMount(() => {
+  onMount(async () => {
     const link = document.createElement("link");
     link.href = "https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css";
     link.rel = "stylesheet";
@@ -24,23 +26,15 @@
     // Set the map's max bounds.
     map.setMaxBounds(bounds as mapboxgl.LngLatBoundsLike);
 
-    // // Example point data
-    // const points = [
-    //   { coordinates: [45.5017, -73.5673], description: "Point 1" },
-    //   { coordinates: [-74.6, 40.1], description: "Point 2" },
-    //   { coordinates: [-74.4, 40.2], description: "Point 3" },
-    // ];
+    const fires = await getWildFires();
 
-    // // Add points as markers to the map
-    // points.forEach((point) => {
-    //   const el = document.createElement("div");
-    //   el.className = "marker";
 
-    //   new mapboxgl.Marker(el)
-    //     .setLngLat(point.coordinates as mapboxgl.LngLatLike)
-    //     .setPopup(new mapboxgl.Popup({ offset: 25 }).setText(point.description)) // add popups
-    //     .addTo(map);
-    // });
+    fires.forEach((fire) => {
+      const fireMarker = createFireMarker(30, 30);
+      fireMarker
+        .setLngLat([fire.lon, fire.lat])
+        .addTo(map);
+    });
   });
 </script>
 
