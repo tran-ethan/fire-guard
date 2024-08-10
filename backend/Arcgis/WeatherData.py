@@ -97,14 +97,17 @@ for x in df.index:
         new_columns["totalsnow_cm"].append(0.0)
     
     index = x - start_index
-    df_rows = df.iloc[:index+1]
-    new_columns_df = pd.DataFrame(new_columns, index=df_rows.index)
-    combined_df = pd.concat([df_rows, new_columns_df], axis=1)
-    combined_df.to_csv("data/2000-2021_nofires+weather.csv", index=False)
+
+    # Writes to csv at each iteration
+
+    # df_rows = df.iloc[:index+1]
+    # new_columns_df = pd.DataFrame(new_columns, index=df_rows.index)
+    # combined_df = pd.concat([df_rows, new_columns_df], axis=1)
+    # combined_df.to_csv("data/2000-2021_nofires+weather.csv", index=False)
 
     percentage = (index + 1) / len(df) * 100
     print(f"Instance: {INSTANCE}, {percentage:.3f}% done")
-    time.sleep(9)
+    time.sleep(9) # respect request restrictions
 
 weather_df = pd.DataFrame(new_columns, index=df.index)
 df = pd.concat([df, weather_df], axis=1)

@@ -81,6 +81,7 @@ def add_dataset_to_firestore(dataset: pd.DataFrame, collection: str):
     print("All data added to Firestore.")
 
 if __name__ == "__main__":
+
     parser = argparse.ArgumentParser(description="Add data to Firestore.")
     parser.add_argument("--path", type=str, default="./data/2000-2021+2023-2024.csv",
                         help="The path to the dataset. Defaults to ./data/2000-2021+2023-2024.csv.")

@@ -24,6 +24,7 @@ Data processing part of the Fire Guard web application.
 5. **Install the additional packages**
     ```bash
     pip install firebase_admin
+    pip install openmeteo-requests
     ```
 
 **After installing your own dependencies, update requirements.txt**
