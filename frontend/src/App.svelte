@@ -1,7 +1,8 @@
 <script lang="ts">
-  import Button from "./lib/MapBox/Button.svelte";
   import Map from "./lib/MapBox/Map.svelte";
   import Filters from "./lib/MapBox/Filters.svelte";
+    import Coordinates from "./lib/MapBox/Coordinates.svelte";
+
   
 </script>
 
@@ -10,8 +11,14 @@
     <img src="logo.png" alt="Icon" class="icon" />
     Fire Guard
   </h1>
+
+  <home>
+    Home
+  </home>
   
   
   <Map />
   <Filters />
+  <Coordinates />
+  
 </main>

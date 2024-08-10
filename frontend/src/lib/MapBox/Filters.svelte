@@ -2,12 +2,22 @@
   import { onMount } from "svelte";
   import flatpickr from "flatpickr";
   import "flatpickr/dist/flatpickr.min.css";
-  let rotated = false;
+  import { filtersRotated } from "./store"; 
+  import { coordinatesY } from "./store";
+  import { get } from "svelte/store";
+  
+  
+
+  
+  let coordinatesRotated = false;
   let dateChecked = false;
   let provinceChecked = false;
   let startDate = "";
   let endDate = "";
   let provinceInput = "";
+  let newYValue = coordinatesY;
+
+
 
   let filteredProvinces = [
     "Alberta",
@@ -25,25 +35,44 @@
     "Yukon",
   ];
 
-  function toggleRotation() {
-    rotated = !rotated;
-
-    const checkboxContainer = document.querySelector(".checkbox-container");
-    if (checkboxContainer) {
-      if (rotated) {
-        checkboxContainer.classList.add("show");
-      } else {
-        checkboxContainer.classList.remove("show");
-      }
+  function toggleFiltersRotation() {
+    filtersRotated.update(value => !value);
+  
+    if($filtersRotated && !provinceChecked && !dateChecked){
+      coordinatesY.update(currentY => 150);
+      console.log($coordinatesY);
     }
-  }
+    else if($filtersRotated && provinceChecked && dateChecked){
+      coordinatesY.update(currentY => 400);
+      console.log($coordinatesY);
+    }
+
+    else if($filtersRotated && dateChecked){
+      coordinatesY.update(currentY => 230);
+    }
+    else if($filtersRotated && provinceChecked){
+      coordinatesY.update(currentY => 320);
+    }
+    
+    
+    else{
+      coordinatesY.update(currentY => 3);
+    }
+    
+    }
+  
+
+
 
   function byDateChecked() {
     dateChecked = !dateChecked;
     if(dateChecked){
       initializeFlatpickr();
+      coordinatesY.update(currentY => currentY + 80);
     }
-    
+    else{
+      coordinatesY.update(currentY => currentY - 80);
+    }
    
   }
   function initializeFlatpickr(){
@@ -52,17 +81,28 @@
   }
   function byProvinceChecked() {
     provinceChecked = !provinceChecked;
+
+    if(provinceChecked){
+      initializeFlatpickr();
+      coordinatesY.update(currentY => currentY + 170);
+    }
+    else{
+      coordinatesY.update(currentY => currentY - 170);
+    }
+    
   }
 
   function filterProvinces() {}
  
 </script>
 
-<div id="filters" class="filters" on:click={toggleRotation}>
-  Filters&nbsp;<span id="last-char" class:rotated>&gt;</span>
+<div id="filters" class="filters" on:click={toggleFiltersRotation}>
+  Filters&nbsp;<span id="last-char" class:rotated={$filtersRotated}>&gt;</span>
 </div>
 
-<div class="checkbox-container {rotated ? 'show' : ''}">
+
+
+<div class="checkbox-container {($filtersRotated) ? 'show' : ''}">
   <label class="custom-checkbox">
     <input
       type="checkbox"
@@ -135,13 +175,14 @@
   #last-char.rotated {
     transform: rotate(90deg);
   }
+
   .filters {
     position: absolute;
-    top: 100px;
-    left: 97px;
+    font-family: "Lilita One", sans-serif;
+    top: 17.2%;
+    left: 6.5%;
     padding: 10px;
     border-radius: 5px;
-    font-family: "Lilita One", sans-serif;
     font-size: 30px;
     font-style: normal;
     z-index: 10;
@@ -151,8 +192,8 @@
     align-items: center;
   }
   .filters:hover {
-    top: 90px;
-    left: 87px;
+     top: 16.35%;
+     left: 5.83%;  
     color: rgba(202, 120, 104, 0.895);
     font-size: 40px;
   }
@@ -163,7 +204,7 @@
     font-style: normal;
     z-index: 10;
     left: 77px;
-    top: 160px;
+    top: 24.3%;
     color: rgba(180, 159, 155, 0.895);
     transform: translateX(-160%);
     transition: transform 0.3s ease;
