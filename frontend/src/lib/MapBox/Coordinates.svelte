@@ -7,22 +7,13 @@
   let longInput = "";
   let latInput = "";
   let isHovered = false;
+
   
   let yPosition: number;
   $: yPosition = $coordinatesY; 
 
-  $: coordinatesStyle = `
-    transform: translateY(${yPosition}%);
-    transition: transform 0.4s ease;
-    
-    
-  `;
+  $ : coordinatesStyle = `transform: translateY(${yPosition}%); top: ${isHovered ? `${yPosition - 30}%` : `${yPosition}%`}` ;
 
-  $: hoverStyle = `
-    font-size: ${isHovered ? '35px' : '30px'};
-    transition: font-size 0.1s ease;
-    color: ${isHovered ? 'rgba(202, 120, 104, 0.895)' : ''};
-  `;
 
   // Combine them into a single transform property
   $: combinedStyle =  `transform: translateY(${yPosition + 20}%) translateX(${coordinatesRotated ? 0 : -135}%); transition: transform 0.4s ease;`;
@@ -32,7 +23,6 @@
     coordinatesRotated = !coordinatesRotated;
   
   }
-
 
   function onMouseEnter() {
     isHovered = true;
@@ -45,7 +35,7 @@
 
 <div 
   class="coordinates" 
-  style={coordinatesStyle + (isHovered ? ` ${hoverStyle}` : '')} 
+  style={coordinatesStyle} 
   on:click={toggleCoordinatesRotation}
   on:mouseenter={onMouseEnter}
   on:mouseleave={onMouseLeave}
@@ -85,8 +75,8 @@
     top: 22.9%; 
     left: 6.5%;
     padding: 10px;
-    font-size: 30px;
     border-radius: 5px;
+    font-size: 30px;
     font-style: normal;
     z-index: 10;
     font-family: "Lilita One", sans-serif;
@@ -98,7 +88,13 @@
     transition: transform 0.4s ease;
   }
 
-  
+  /* .coordinates:hover {
+     top: 22.05%;
+    left: 5.83%; 
+    color: rgba(202, 120, 104, 0.895);
+    font-size: 40px;
+  } */
+
   
 
   .text-field {

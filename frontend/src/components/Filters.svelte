@@ -187,10 +187,9 @@
     color: rgba(180, 159, 155, 0.895);
     display: flex;
     align-items: center;
+    transition:  font-size 0.1s ease;
   }
   .filters:hover {
-     top: 16.35%;
-     left: 5.83%;  
     color: rgba(202, 120, 104, 0.895);
     font-size: 40px;
   }

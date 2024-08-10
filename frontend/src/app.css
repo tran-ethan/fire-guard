@@ -65,13 +65,13 @@ home {
   color: rgba(180, 159, 155, 0.895);
   display: flex;
   align-items: center;
+  transition:  font-size 0.1s ease;
 }
 home:hover{
   text-decoration: underline;
   color: rgba(202, 120, 104, 0.895);
     font-size: 40px;
-    top: 11%;
-    left: 5.83%;  
+  
     
 }
 
