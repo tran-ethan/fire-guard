@@ -51,11 +51,33 @@ h1 {
   align-items: center;
 }
 
+home {
+  position: absolute;
+  font-family: "Lilita One", sans-serif;
+  top: 11.5%;
+  left: 6.5%;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 30px;
+  font-style: normal;
+  z-index: 10;
+  cursor: pointer;
+  color: rgba(180, 159, 155, 0.895);
+  display: flex;
+  align-items: center;
+  transition:  font-size 0.1s ease;
+}
+home:hover{
+  text-decoration: underline;
+  color: rgba(202, 120, 104, 0.895);
+    font-size: 40px;
+  
+    
+}
 
 
 .icon {
-  width: 80px;
-  height: 80px;
+  width: 8%;
   margin-right: 5px;
 }
 

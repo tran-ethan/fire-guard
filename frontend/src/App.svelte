@@ -1,12 +1,13 @@
 <script lang="ts">
   import Map from "./components/Map.svelte";
   import Filters from "./components/Filters.svelte";
-  import { onMount } from "svelte";
+  import Coordinates from "./components/Coordinates.svelte";
   import { getWildFire } from "./lib/wildfires";
+  import { onMount } from "svelte";
 
   onMount(async () => {
     try {
-      const fire = await getWildFire("0jvL5inL2advNxnbz13c");
+      const fire = await getWildFire("EFnlJ7dUtmLCF5qhHg1N");
       console.log(fire);
     } catch (error) {
       console.error(error);
@@ -20,6 +21,9 @@
     Fire Guard
   </h1>
 
+  <home> Home </home>
+
   <Map />
   <Filters />
+  <Coordinates />
 </main>

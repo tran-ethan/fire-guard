@@ -1,15 +1,24 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import flatpickr from "flatpickr";
   import "flatpickr/dist/flatpickr.min.css";
-  let rotated = false;
+  import { filtersRotated } from "./store"; 
+  import { coordinatesY } from "./store";
+  import { get } from "svelte/store";
+  
+  
+
+  
+  let coordinatesRotated = false;
   let dateChecked = false;
   let provinceChecked = false;
   let startDate = "";
   let endDate = "";
   let provinceInput = "";
+  let newYValue = coordinatesY;
 
-  let filteredProvinces = [
+
+
+  const filteredProvinces = [
     "Alberta",
     "British Columbia",
     "Manitoba",
@@ -25,44 +34,73 @@
     "Yukon",
   ];
 
-  function toggleRotation() {
-    rotated = !rotated;
-
-    const checkboxContainer = document.querySelector(".checkbox-container");
-    if (checkboxContainer) {
-      if (rotated) {
-        checkboxContainer.classList.add("show");
-      } else {
-        checkboxContainer.classList.remove("show");
-      }
+  function toggleFiltersRotation() {
+    filtersRotated.update(value => !value);
+  
+    if($filtersRotated && !provinceChecked && !dateChecked){
+      coordinatesY.update(currentY => 150);
+      console.log($coordinatesY);
     }
-  }
+    else if($filtersRotated && provinceChecked && dateChecked){
+      coordinatesY.update(currentY => 400);
+      console.log($coordinatesY);
+    }
+
+    else if($filtersRotated && dateChecked){
+      coordinatesY.update(currentY => 230);
+    }
+    else if($filtersRotated && provinceChecked){
+      coordinatesY.update(currentY => 320);
+    }
+    
+    
+    else{
+      coordinatesY.update(currentY => 3);
+    }
+    
+    }
+  
+
+
 
   function byDateChecked() {
     dateChecked = !dateChecked;
-    if(dateChecked){
+    if (dateChecked) {
       initializeFlatpickr();
+      coordinatesY.update(currentY => currentY + 80);
     }
-    
+    else{
+      coordinatesY.update(currentY => currentY - 80);
+    }
    
   }
-  function initializeFlatpickr(){
-    flatpickr("#start-date", { dateFormat: "Y-m-d" });
-    flatpickr("#end-date", { dateFormat: "Y-m-d" });
+  function initializeFlatpickr() {
+    flatpickr("#start-date", { dateFormat: "d/m/Y" });
+    flatpickr("#end-date", { dateFormat: "d/m/Y" });
   }
   function byProvinceChecked() {
     provinceChecked = !provinceChecked;
+
+    if(provinceChecked){
+      initializeFlatpickr();
+      coordinatesY.update(currentY => currentY + 170);
+    }
+    else{
+      coordinatesY.update(currentY => currentY - 170);
+    }
+    
   }
 
   function filterProvinces() {}
- 
 </script>
 
-<div id="filters" class="filters" on:click={toggleRotation}>
-  Filters&nbsp;<span id="last-char" class:rotated>&gt;</span>
+<div id="filters" class="filters" on:click={toggleFiltersRotation}>
+  Filters&nbsp;<span id="last-char" class:rotated={$filtersRotated}>&gt;</span>
 </div>
 
-<div class="checkbox-container {rotated ? 'show' : ''}">
+
+
+<div class="checkbox-container {($filtersRotated) ? 'show' : ''}">
   <label class="custom-checkbox">
     <input
       type="checkbox"
@@ -81,7 +119,7 @@
         id="start-date"
         placeholder="Start Date"
         class="text-field"
-        on:click={initializeFlatpickr()}
+        on:click={initializeFlatpickr}
       />
       to
       <input
@@ -90,7 +128,6 @@
         id="end-date"
         placeholder="End Date"
         class="text-field"
-        
       />
     </div>
   {/if}
@@ -135,13 +172,14 @@
   #last-char.rotated {
     transform: rotate(90deg);
   }
+
   .filters {
     position: absolute;
-    top: 100px;
-    left: 97px;
+    font-family: "Lilita One", sans-serif;
+    top: 17.2%;
+    left: 6.5%;
     padding: 10px;
     border-radius: 5px;
-    font-family: "Lilita One", sans-serif;
     font-size: 30px;
     font-style: normal;
     z-index: 10;
@@ -149,10 +187,9 @@
     color: rgba(180, 159, 155, 0.895);
     display: flex;
     align-items: center;
+    transition:  font-size 0.1s ease;
   }
   .filters:hover {
-    top: 90px;
-    left: 87px;
     color: rgba(202, 120, 104, 0.895);
     font-size: 40px;
   }
@@ -163,7 +200,7 @@
     font-style: normal;
     z-index: 10;
     left: 77px;
-    top: 160px;
+    top: 24.3%;
     color: rgba(180, 159, 155, 0.895);
     transform: translateX(-160%);
     transition: transform 0.3s ease;
@@ -223,11 +260,10 @@
       border-color 0.2s ease,
       box-shadow 0.2s ease;
   }
-  #text-field-province{
+  #text-field-province {
     width: 140px;
     margin-left: 0px;
   }
-  
 
   .by-province-dropdown {
     position: relative;
@@ -259,7 +295,7 @@
   .flatpickr-calendar {
     z-index: 9999;
   }
-#text-field-province:focus + .dropdown-content {
+  #text-field-province:focus + .dropdown-content {
     display: block;
-}
+  }
 </style>
