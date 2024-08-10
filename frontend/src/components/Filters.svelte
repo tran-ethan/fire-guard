@@ -72,10 +72,7 @@
     else{
       coordinatesY.update(currentY => currentY - 80);
     }
-<<<<<<< HEAD:frontend/src/lib/MapBox/Filters.svelte
    
-=======
->>>>>>> ae0735f1784bba2ab4ac95e5f6ad3f993b832f86:frontend/src/components/Filters.svelte
   }
   function initializeFlatpickr() {
     flatpickr("#start-date", { dateFormat: "d/m/Y" });
