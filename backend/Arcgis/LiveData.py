@@ -1,5 +1,7 @@
 from arcgis.gis import GIS
 import openmeteo_requests
+import geopandas as gpd
+from shapely.geometry import Point
 import numpy as np
 import json
 import traceback
@@ -7,6 +9,8 @@ import pandas as pd
 import os
 from datetime import datetime
 import pytz
+
+canada_boundaries = gpd.read_file('data/canada_boundary.geojson')
 
 timezoneDict = {
     'MDT': 'America/Denver', # UTC-6
@@ -105,11 +109,25 @@ def cleanDataset(data):
     df.rename(columns={'Longitude': 'lon'}, inplace=True)
     df['Start_Date'] = df['Start_Date'].astype(str)
 
-    # format the time to datetime and timezone to utc
+    len_df = len(df)
+    indicesToDrop = []
+
+    # format the time to datetime and timezone to utc and check if points are inside Canada
     for x in df.index:
-        unixTime = int(df.loc[x, "Start_Date"])
-        dtTime = convertDate(unixTime)
-        df.loc[x, "Start_Date"] = dtTime
+        lat = df.loc[x, "lat"]
+        lon = df.loc[x, "lon"]
+        if (not isWithinCanada(lat,lon)):
+            indicesToDrop.append(x)
+        else:
+            unixTime = int(df.loc[x, "Start_Date"])
+            dtTime = convertDate(unixTime)
+            df.loc[x, "Start_Date"] = dtTime
+    
+    df = df.drop(indicesToDrop)
+    len_cleaned_df = len(df)
+    rows_not_Canada = len_df - len_cleaned_df
+
+    print(f"Rows not in Canada removed: {rows_not_Canada}")
 
     df.rename(columns={'Start_Date': 'date'}, inplace=True)
 
@@ -227,6 +245,10 @@ def convertTimezone(timezone, time):
     utcTime = localTime.astimezone(pytz.utc).strftime(timeFormat)
     return utcTime
 
+def isWithinCanada(lat, lon):
+    point = Point(lon, lat)
+    return canada_boundaries.contains(point).any()
+
 if __name__ == "__main__":
 
     print("Retrieving the dataset...")
@@ -248,8 +270,6 @@ if __name__ == "__main__":
         # Adding weather data
         print("Adding weather data...")
         df = addWeatherData(df)
-        print("current")
-        print(df)
         lenNa = len(df)
         df = df.dropna(how='any')
         currentLength = len(df)
@@ -266,8 +286,6 @@ if __name__ == "__main__":
         existing_df = None
         if os.path.exists(existing_path) and os.path.getsize(existing_path) > 0: existing_df = pd.read_csv("data/Previous_Fires.csv")
         merged_df = pd.concat([df, existing_df], axis=0, ignore_index=True)
-        print("merged")
-        print(merged_df)
         dfLength = len(merged_df)
         merged_df = merged_df.drop_duplicates()
         merged_df.to_csv("data/Previous_Fires.csv", index=False)
