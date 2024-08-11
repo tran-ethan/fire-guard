@@ -23,15 +23,9 @@ Data processing part of the Fire Guard web application.
     ```
 5. **Install the additional packages**
     ```bash
-    pip install firebase_admin
-    pip install openmeteo-requests
+    pip install firebase_admin openmeteo-requests shapely geopandas
     ```
-
-**After installing your own dependencies, update requirements.txt**
-```bash
-pip freeze > requirements.txt
-```
-
+    
 ## Scripts
 
 ### Add to Firestore 
