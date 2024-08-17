@@ -9,8 +9,11 @@ import pandas as pd
 import os
 from datetime import datetime
 import pytz
+import time
 
 canada_boundaries = gpd.read_file('data/canada_boundary.geojson')
+HOUR = 3600
+retrying = False
 
 timezoneDict = {
     'MDT': 'America/Denver', # UTC-6
@@ -32,8 +35,7 @@ def getDataset():
     gis = GIS("https://www.arcgis.com")
 
     # Get Active WildFires in Canada dataset
-        # wildfire_item = gis.content.get(dataset_id)
-    searchRes= gis.content.search(query="Active Wildfires in Canada", item_type="Feature Layer", max_items=10)
+    searchRes = gis.content.search(query="Active Wildfires in Canada", item_type="Feature Layer", max_items=10)
     wildfire_item = None
 
     for item in searchRes:
@@ -78,9 +80,11 @@ def getDataset():
                     csv_file_path = os.path.join("data", "rawData.csv")
                     df.to_csv(csv_file_path, index=False)  # Convert the pandas DataFrame to a csv
                     print("Sucessfully retrieved the dataset")
+                    retrying = False
                     return df
                 else:
-                    print("The result of the query is empty")
+                    print("The result of the query is empty, retrying in one hour")
+                    retrying = True
                     return None
             except Exception as e:
                 traceback.print_exc()
@@ -252,7 +256,10 @@ def isWithinCanada(lat, lon):
 if __name__ == "__main__":
 
     print("Retrieving the dataset...")
-    res = getDataset()
+
+    for i in range(3):
+        res = getDataset()
+        if (not retrying): break
 
     if (res is not None):
 
@@ -282,22 +289,17 @@ if __name__ == "__main__":
 
         # Retrieve the old df and merge it with the new one
 
-        existing_path = "data/Active_Fires.csv"
-        existing_df = None
-        if os.path.exists(existing_path) and os.path.getsize(existing_path) > 0: existing_df = pd.read_csv(existing_path)
-        merged_df = pd.concat([df, existing_df], axis=0, ignore_index=True)
-        dfLength = len(merged_df)
-        merged_df = merged_df.drop_duplicates(subset=['lat', 'lon', 'date'])
-        merged_df.to_csv(existing_path, index=False)
-        newDfLength = len(merged_df)
+        save_path = "data/Active_Fires.csv"
+        dfLength = len(df)
+        df = df.drop_duplicates(subset=['lat', 'lon', 'date'])
+        df.to_csv(save_path, index=False)
+        newDfLength = len(df)
         numDuplicates = dfLength - newDfLength
         print(f"Duplicates removed: {numDuplicates}")
         print(f"Null values removed: {numNa}")
-        numNewData = currentLength - numDuplicates
-        newDf = merged_df.tail(numNewData)
         print("Added data:")
-        if (numNewData > 0):
-            print(newDf)
+        if (newDfLength > 0):
+            print(df)
         else:
             print("No data added")
         print("Done!")
