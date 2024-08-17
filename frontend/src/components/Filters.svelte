@@ -42,7 +42,7 @@
       console.log($coordinatesY);
     }
     else if($filtersRotated && provinceChecked && dateChecked){
-      coordinatesY.update(currentY => 400);
+      coordinatesY.update(currentY => 440);
       console.log($coordinatesY);
     }
 
@@ -50,9 +50,8 @@
       coordinatesY.update(currentY => 230);
     }
     else if($filtersRotated && provinceChecked){
-      coordinatesY.update(currentY => 320);
+      coordinatesY.update(currentY => 360);
     }
-    
     
     else{
       coordinatesY.update(currentY => 3);
@@ -83,10 +82,10 @@
 
     if(provinceChecked){
       initializeFlatpickr();
-      coordinatesY.update(currentY => currentY + 170);
+      coordinatesY.update(currentY => currentY + 200);
     }
     else{
-      coordinatesY.update(currentY => currentY - 170);
+      coordinatesY.update(currentY => currentY - 200);
     }
     
   }
