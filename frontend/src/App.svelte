@@ -1,9 +1,10 @@
 <script lang="ts">
-  import Map from "./components/Map.svelte";
-  import Filters from "./components/Filters.svelte";
-  import Coordinates from "./components/Coordinates.svelte";
   import { getWildFire } from "./lib/wildfires";
   import { onMount } from "svelte";
+  import HomePage from "./pages/HomePage.svelte";
+  import MapPage from "./pages/MapPage.svelte";
+
+  let currentRoute = "/map";
 
   onMount(async () => {
     try {
@@ -13,19 +14,26 @@
       console.error(error);
     }
   });
+
+  const routes: {
+    [key: string]: any;
+  } = {
+    "/": HomePage,
+    "/map": MapPage,
+  };
+
+  onMount(() => {
+    currentRoute = window.location.pathname;
+    window.onpopstate = () => {
+      currentRoute = window.location.pathname;
+    };
+  });
 </script>
 
-
-
 <main>
-  <h1>
-    <img src="logo.png" alt="Icon" class="icon" />
-    Fire Guard
-  </h1>
-
-  <home> Home </home>
-
-  <Map />
-  <Filters />
-  <Coordinates />
+  {#if routes[currentRoute]}
+    <svelte:component this={routes[currentRoute]} />
+  {:else}
+    <h1>404 - Page Not Found</h1>
+  {/if}
 </main>

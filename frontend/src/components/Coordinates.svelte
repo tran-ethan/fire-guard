@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { coordinatesY } from "./store";
+  import { coordinatesY } from "../lib/MapBox/store";
 
   let coordinatesRotated = false;
   let longInput = "";
