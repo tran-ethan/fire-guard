@@ -280,26 +280,21 @@ if __name__ == "__main__":
         print("Writing df as csv...")
         os.remove("data/rawData.csv")
 
-        # Retrieve the old df and merge it with the new one to form Previous_Fires.csv
+        # Retrieve the old df and merge it with the new one
 
-        existing_path = "data/Previous_Fires.csv"
+        existing_path = "data/Active_Fires.csv"
         existing_df = None
-        if os.path.exists(existing_path) and os.path.getsize(existing_path) > 0: existing_df = pd.read_csv("data/Previous_Fires.csv")
+        if os.path.exists(existing_path) and os.path.getsize(existing_path) > 0: existing_df = pd.read_csv(existing_path)
         merged_df = pd.concat([df, existing_df], axis=0, ignore_index=True)
         dfLength = len(merged_df)
-        merged_df = merged_df.drop_duplicates()
-        merged_df.to_csv("data/Previous_Fires.csv", index=False)
+        merged_df = merged_df.drop_duplicates(subset=['lat', 'lon', 'date'])
+        merged_df.to_csv(existing_path, index=False)
         newDfLength = len(merged_df)
         numDuplicates = dfLength - newDfLength
         print(f"Duplicates removed: {numDuplicates}")
         print(f"Null values removed: {numNa}")
         numNewData = currentLength - numDuplicates
-
-        # Write the new fires in Active Fires.csv (to be sent to the database)
-
-        newDf = merged_df.tail(currentLength-numDuplicates)
-        csv_file_path = os.path.join("data", "Active_Fires.csv")
-        newDf.to_csv(csv_file_path, index=False)  # Convert the pandas DataFrame to a csv
+        newDf = merged_df.tail(numNewData)
         print("Added data:")
         if (numNewData > 0):
             print(newDf)
