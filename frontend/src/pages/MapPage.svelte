@@ -5,10 +5,10 @@
 </script>
 
 <div>
-  <h1>
+  <title>
     <img src="logo.png" alt="Icon" class="icon" />
     Fire Guard
-  </h1>
+  </title>
 
   <home on:click={() => (window.location.href = "/")}>
     Home

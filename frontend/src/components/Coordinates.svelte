@@ -9,13 +9,10 @@
   let yPosition: number;
   $: yPosition = $coordinatesY;
 
-  // Transform style based on yPosition and rotation
   $: coordinatesStyle = `
     transform: translateY(${yPosition}%);
     transition: transform 0.4s ease;
   `;
-
-  // Hover style for font-size and color changes
   $: hoverStyle = `
     font-size: ${isHovered ? '35px' : '30px'};
     color: ${isHovered ? 'rgba(202, 120, 104, 0.895)' : 'rgba(180, 159, 155, 0.895)'};
