@@ -1,8 +1,4 @@
-<script>
- function handleClick() {
 
-  }
-</script>
 
 <button class="button" on:click={() => (window.location.href = "/map")}>
 Try it out now!
@@ -29,6 +25,7 @@ Try it out now!
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  z-index: 100;
     }
     .button:hover{
         background-color: #d2978d;
