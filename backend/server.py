@@ -1,9 +1,24 @@
 from flask import Flask, render_template, request, jsonify
 import subprocess
-import json
-import requests
+import joblib
+import pandas as pd
 
 app = Flask(__name__)
+
+model_from_disk = joblib.load('../model/model.joblib')
+
+def predict_input(input_df):
+    # Get columns
+    input_columns = model_from_disk['input_cols']
+    # Make month column
+    input_df['date'] = pd.to_datetime(input_df['date'])
+    input_df['month'] = input_df['date'].dt.month
+    # Run scaler on input columns
+    input_df[input_columns] = model_from_disk['scaler'].transform(input_df[input_columns])
+    x_input = input_df[input_columns]
+    prediction = model_from_disk['model'].predict(x_input)[0]
+    probability = model_from_disk['model'].predict_proba(x_input)[0][list(model_from_disk['model'].classes_).index(prediction)]
+    return prediction, probability
 
 @app.route("/") # default endpoint
 def index():
@@ -18,17 +33,17 @@ def fire_analysis():
         if (len(args) == 2):
             try:
                 # Run the weather script with arguments
-                subprocess.run(['python3', 'Arcgis/data/WeatherData.py'] + args, capture_output=True, text=True)
+                df = subprocess.run(['python3', 'Arcgis/CurrentWeatherData.py'] + args, capture_output=True, text=True)
 
-                # Feed the result to the AI
+                # Feed it to the AI and get the outputs
+                prediction, probability = predict_input(df)
 
-                # Return the output
-                
-                # # Return the output of the script
-                # return jsonify({
-                #     'status': 'success',
-                #     'output': result.stdout
-                # })
+                # Return the results as JSON
+                return jsonify({
+                    'prediction': prediction,
+                    'probability': probability
+                })
+            
             except Exception as e:
                 return jsonify({'status': 'error', 'message': str(e)})
 
