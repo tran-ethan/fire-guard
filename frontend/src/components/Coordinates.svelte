@@ -72,7 +72,7 @@
 </div>
 
 <div id="submit-button" class="text" style={combinedStyleBttn}>
-  <button class="button-30">Submit</button>
+  <button class="button-30">Predict</button>
 </div>
 
 <style>
