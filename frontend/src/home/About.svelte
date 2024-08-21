@@ -24,7 +24,7 @@
   
     
   </style>
-  <div class="slogan">
+  <div class="slogan" id="about">
     Guarding the Nation <br>Before Fire Catches
   </div>
   <img src="soldiers.jpg" class="soldier-img" alt="Soldiers">
