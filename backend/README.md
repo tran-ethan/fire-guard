@@ -3,7 +3,7 @@ Data processing part of the Fire Guard web application.
 
 ## How to get started
 
-### Installing the environement for the backend
+### Installing the environment for the backend
 
 1. **Install conda**
     [https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html#regular-installation](https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html#regular-installation)
@@ -28,7 +28,7 @@ Data processing part of the Fire Guard web application.
     pip install firebase_admin openmeteo-requests shapely geopandas
     ```
 
-### Installing the environement for the server
+### Installing the environment for the server
 
 1. **Create an environment**
     ```bash
