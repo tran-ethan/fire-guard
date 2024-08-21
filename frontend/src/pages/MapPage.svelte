@@ -2,7 +2,6 @@
   import Coordinates from "../components/Coordinates.svelte";
   import Filters from "../components/Filters.svelte";
   import Map from "../components/Map.svelte";
-  import Predict from "../components/Predict.svelte";
 </script>
 
 <div>
