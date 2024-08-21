@@ -29,13 +29,19 @@ def index():
 @app.route('/fire-analysis', methods=['POST'])
 def fire_analysis():
     
-    # Extract arguments from the request if needed
+    # Extract arguments from the request
     args = request.json.get('args', [])
+    args_str = ' '.join(args)  # Convert list to string
 
-    if (len(args) == 2):
+    command = [
+        '/home/ubuntu/miniconda3/envs/arcgis_env/bin/python3',  # Full path to Python in the conda environment
+        'Arcgis/CurrentWeatherData.py'
+    ] + args_str
+
+    if (len(args) == 4):
         try:
             # Run the weather script with arguments
-            df = subprocess.run(['python3', 'Arcgis/CurrentWeatherData.py'] + args, capture_output=True, text=True)
+            df = subprocess.run(command, capture_output=True, text=True)
 
             # Feed it to the AI and get the outputs
             prediction, probability = predict_input(df)
