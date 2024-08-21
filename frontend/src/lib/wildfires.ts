@@ -26,3 +26,7 @@ export async function getWildFire(id: string) {
 export async function getWildFires(...constraints: QueryFieldFilterConstraint[]) {
     return await getDocumentDatas<WildFire>(collectionName, ...constraints);
 }
+
+export async function getWildfirePrediction(lat: number, lon: number) {
+    //send a post request to a api endpoint to get the prediction
+}
