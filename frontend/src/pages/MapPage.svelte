@@ -17,5 +17,4 @@
   <Map />
   <Filters />
   <Coordinates />
-  <Predict />
 </div>
