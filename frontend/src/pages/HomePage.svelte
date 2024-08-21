@@ -16,9 +16,10 @@
   <div class="background">
     <header class="header">
       <img src="logo.png" alt="Icon" class="icon" />
-      <h1 class="title">Fire Guard</h1>
-      <h1 class="header-text">Home</h1>
+      <h1 class="title" on:click={() => window.location.href= "/"}>Fire Guard</h1>
+      <!-- <h1 class="header-text">Home</h1> -->
       <h1 class="header-text" on:click={() => scrollToElement("about")}>About</h1>
+      <h1 class="header-text" on:click={() => window.location.href = "/map"}>Map</h1>
       <h1 class="header-text">Collaboration</h1>
     </header>
 
@@ -49,6 +50,10 @@
   .title {
     font-size: 40px;
     color: #af201b;
+  }
+
+  .title:hover {
+    text-decoration: underline;
   }
 
   .header-text {
