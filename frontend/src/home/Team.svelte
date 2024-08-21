@@ -20,11 +20,25 @@
     margin-left: 65%;
     position: absolute;
   }
+  .anais-img{
+    width: 11%;
+    margin-top: 430%;
+    margin-left: 45%;
+    position: absolute;
+  }
+  .parsa-img{
+    width: 11%;
+    margin-top: 430%;
+    margin-left: 10%;
+    position: absolute;
+  }
 </style>
 
-<div id="collaborators">
+<div id="team">
     Our Awesome Team
 </div>
 
+<img src="Parsa.png" class="parsa-img" alt="Parsa">
 <img src="Ethan.png" class="ethan-img" alt="Ethan">
-<img src="Gabriel.png" class="gab-img" alt="Ethan">
+<img src="Gabriel.png" class="gab-img" alt="Gabriel">
+<img src="Anais.png" class="anais-img" alt="Anais">

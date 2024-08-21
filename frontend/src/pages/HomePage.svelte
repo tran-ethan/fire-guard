@@ -1,7 +1,7 @@
 <script lang="ts">
   import TryButton from "../home/TryButton.svelte";
   import About from "../home/About.svelte";
-    import Collaborators from "../home/Collaborators.svelte";
+    import Collaborators from "../home/Team.svelte";
 
   /**
    * @param id html id of the element to scroll to
@@ -20,7 +20,7 @@
       <h1 class="title" on:click={() => window.location.href= "/"}>Fire Guard</h1>
       <h1 class="header-text" on:click={() => scrollToElement("sword")}>About</h1>
       <h1 class="header-text" on:click={() => window.location.href = "/map"}>Map</h1>
-      <h1 class="header-text">Collaboration</h1>
+      <h1 class="header-text" on:click={() => scrollToElement("team")}>Team</h1>
     </header>
 
     <div class="sub">
