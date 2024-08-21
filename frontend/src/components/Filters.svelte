@@ -1,8 +1,8 @@
 <script lang="ts">
   import flatpickr from "flatpickr";
   import "flatpickr/dist/flatpickr.min.css";
-  import { filtersRotated } from "../lib/MapBox/store"; 
-  import { coordinatesY } from "../lib/MapBox/store";
+  import { filtersRotated } from "../lib/store"; 
+  import { coordinatesY } from "../lib/store";
   import { get } from "svelte/store";
   
   
