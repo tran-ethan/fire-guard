@@ -1,6 +1,7 @@
 <script lang="ts">
   import TryButton from "../home/TryButton.svelte";
   import About from "../home/About.svelte";
+    import Collaborators from "../home/Collaborators.svelte";
 
   /**
    * @param id html id of the element to scroll to
@@ -17,7 +18,7 @@
     <header class="header">
       <img src="logo.png" alt="Icon" class="icon" />
       <h1 class="title" on:click={() => window.location.href= "/"}>Fire Guard</h1>
-      <h1 class="header-text" on:click={() => scrollToElement("about")}>About</h1>
+      <h1 class="header-text" on:click={() => scrollToElement("sword")}>About</h1>
       <h1 class="header-text" on:click={() => window.location.href = "/map"}>Map</h1>
       <h1 class="header-text">Collaboration</h1>
     </header>
@@ -33,17 +34,16 @@
       location, and severity to strategically place fire shelters.
     </div>
 
-    <img src="sword.png" class="sword" />
+    <img src="sword.png" class="sword" id="sword"/>
   </div>
   <About />
+  <Collaborators />
   <TryButton />
 </body>
 
 <style>
   body {
     overflow-x: hidden; /* Prevent horizontal scrolling */
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
     position: relative;
   }
   .title {
