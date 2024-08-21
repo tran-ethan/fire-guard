@@ -13,6 +13,7 @@
     background-color: #cc9797a9;  /* Background color of the rectangle */
     position: absolute;
     border-width: 6px;
+    border-color: #422800;
         }
     #rectangle-ethan{
 margin-top: 471%;
@@ -35,13 +36,27 @@ margin-top: 471%;
     margin-left: 65%;
     position: absolute;
   }
+  .anais-img{
+    width: 11%;
+    margin-top: 430%;
+    margin-left: 45%;
+    position: absolute;
+  }
+  .parsa-img{
+    width: 11%;
+    margin-top: 430%;
+    margin-left: 10%;
+    position: absolute;
+  }
 </style>
 
-<div id="collaborators">
+<div id="team">
     Our Awesome Team
 </div>
 
 <div class="rectangle" id="rectangle-ethan"></div>
 <div class="rectangle" id="rectangle-gab"></div>
+<img src="Parsa.png" class="parsa-img" alt="Parsa">
 <img src="Ethan.png" class="ethan-img" alt="Ethan">
 <img src="Gabriel.png" class="gab-img" alt="Gabriel">
+<img src="Anais.png" class="anais-img" alt="Anais">
