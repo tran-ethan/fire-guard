@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, jsonify
+import sklearn
 import subprocess
 import joblib
 import pandas as pd
+import numpy
 
 app = Flask(__name__)
 
@@ -27,25 +29,25 @@ def index():
 @app.route('/fire-analysis', methods=['POST'])
 def fire_analysis():
     
-        # Extract arguments from the request if needed
-        args = request.json.get('args', [])
+    # Extract arguments from the request if needed
+    args = request.json.get('args', [])
 
-        if (len(args) == 2):
-            try:
-                # Run the weather script with arguments
-                df = subprocess.run(['python3', 'Arcgis/CurrentWeatherData.py'] + args, capture_output=True, text=True)
+    if (len(args) == 2):
+        try:
+            # Run the weather script with arguments
+            df = subprocess.run(['python3', 'Arcgis/CurrentWeatherData.py'] + args, capture_output=True, text=True)
 
-                # Feed it to the AI and get the outputs
-                prediction, probability = predict_input(df)
+            # Feed it to the AI and get the outputs
+            prediction, probability = predict_input(df)
 
-                # Return the results as JSON
-                return jsonify({
-                    'prediction': prediction,
-                    'probability': probability
-                })
-            
-            except Exception as e:
-                return jsonify({'status': 'error', 'message': str(e)})
+            # Return the results as JSON
+            return jsonify({
+                'prediction': prediction,
+                'probability': probability
+            })
+        
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': str(e)})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

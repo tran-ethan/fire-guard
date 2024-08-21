@@ -3,6 +3,8 @@ Data processing part of the Fire Guard web application.
 
 ## How to get started
 
+### Installing the environement for the backend
+
 1. **Install conda**
     [https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html#regular-installation](https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html#regular-installation)
 
@@ -24,6 +26,23 @@ Data processing part of the Fire Guard web application.
 5. **Install the additional packages**
     ```bash
     pip install firebase_admin openmeteo-requests shapely geopandas
+    ```
+
+### Installing the environement for the server
+
+1. **Create an environment**
+    ```bash
+    conda create --name <EnvName>
+    ```
+
+2. **Activate your environment**
+    ```bash
+    conda activate <EnvName>
+    ```
+
+3. **Install the additional packages**
+    ```bash
+    pip install flask scikit-learn joblib pandas numpy
     ```
     
 ## Scripts
