@@ -7,7 +7,23 @@
     color: #af201b;
     line-height: 1.25;
     }
+    .rectangle {
+    width: 30%;   /* Width of the rectangle */
+    height: 600px;  /* Height of the rectangle */
+    background-color: #cc9797a9;  /* Background color of the rectangle */
+    position: absolute;
+    border-width: 6px;
+    border-color: #422800;
+        }
+    #rectangle-ethan{
+margin-top: 471%;
+    margin-left: 15%;
     
+        }
+        #rectangle-gab{
+margin-top: 471%;
+    margin-left: 55%;
+        }
   .ethan-img{
     width: 10%;
     margin-top: 430%;
@@ -26,5 +42,7 @@
     Our Awesome Team
 </div>
 
+<div class="rectangle" id="rectangle-ethan"></div>
+<div class="rectangle" id="rectangle-gab"></div>
 <img src="Ethan.png" class="ethan-img" alt="Ethan">
 <img src="Gabriel.png" class="gab-img" alt="Ethan">
