@@ -145,47 +145,4 @@
     margin-left: 45%;
     opacity: 0.85;
   }
-  /* 
-.banner {
-  font-family: "Lilita One", sans-serif;
-  position: absolute;
-  left: 45%;
-  margin: 180px -200px;
-  margin-top: 90%;
-  width: 600px;
-  height: 120px;
-  border: 1px solid rgb(249, 202, 192);;
-  font: 30px/60px ;
-  text-align: center;
-  color: rgb(134, 49, 32);
-  background: rgba(240, 189, 179, 0.178);;
-  border-radius: 4px;
-  box-shadow: 0 0 30px rgba(0,0,0,.15) inset,
-              0 6px 10px rgba(0,0,0,.15);
-}
-
-.banner::before,
-.banner::after {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  left: -45px;
-  top: 24px;
-  display: block;
-  width: 50px;
-  height: 0px;
-  border: 100px solid rgb(179, 135, 126);
-  border-right: 20px solid rgb(179, 135, 126);
-  border-bottom-color: rgb(179, 135, 126);
-  border-left-color: transparent;
-  transform: rotate(-5deg);
-}
-
-.banner::after {
-  left: 390px;
-  right: -70px;
-  border-left: 20px solid rgb(179, 135, 126);
-  border-right: 100px solid transparent;
-  transform: rotate(5deg);
-} */
 </style>

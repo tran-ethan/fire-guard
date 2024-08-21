@@ -174,7 +174,6 @@
 
   .filters {
     position: absolute;
-    font-family: "Lilita One", sans-serif;
     top: 17.2%;
     left: 6.5%;
     padding: 10px;

@@ -14,7 +14,14 @@
     
     
   .slogan{
-    margin-top: 85%;
+    margin-top: 80%;
+    margin-left: 60%;
+    position:absolute;
+    font-size: 60px;
+    color: #e0896f;;
+  }
+  .slogan{
+    margin-top: 80%;
     margin-left: 60%;
     position:absolute;
     font-size: 60px;
