@@ -6,6 +6,7 @@ import {
     getDocumentData,
     getDocumentDatas,
 } from "./db";
+import axios from "axios";
 
 export type WildFire = {
     lat: number;
@@ -28,5 +29,13 @@ export async function getWildFires(...constraints: QueryFieldFilterConstraint[])
 }
 
 export async function getWildfirePrediction(lat: number, lon: number) {
-    //send a post request to a api endpoint to get the prediction
+    //TODO: put actual URL
+    return axios.post("http://localhost:5000/predict", {
+        lat: lat,
+        lon: lon
+    }).then((response) => {
+        return response.data;
+    }).catch((error) => {
+        console.log(error);
+    });
 }
