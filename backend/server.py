@@ -4,6 +4,7 @@ import subprocess
 import joblib
 import pandas as pd
 import numpy
+from io import StringIO
 
 app = Flask(__name__)
 
@@ -35,26 +36,44 @@ def fire_analysis():
     
     # Extract arguments from the request
     args = request.json.get('args', [])
-    args_str = ' '.join(args)  # Convert list to string
+    print(f"Received arguments: {args}")
+    #args_str = ' '.join(args)  # Convert list to string
 
     command = [
-        '/home/ubuntu/miniconda3/envs/arcgis_env/bin/python3',  # Full path to Python in the conda environment
+        #r"C:\Users\Gaby\anaconda3\envs\arcgis_env\python.exe", # Windows
+        '/home/ubuntu/miniconda3/envs/arcgis_env/bin/python3',  # Linux, Full path to Python in the conda environment
         'Arcgis/CurrentWeatherData.py'
-    ] + args_str
+    ] + args
 
     if (len(args) == 4):
         try:
+            print("Running the weather script")
             # Run the weather script with arguments
-            df = subprocess.run(command, capture_output=True, text=True)
+            result = subprocess.run(command, capture_output=True, text=True)
 
-            # Feed it to the AI and get the outputs
-            prediction, probability = predict_input(df)
+            print("Subprocess finished with return code:", result.returncode)
+            print("Standard Output:", result.stdout)
+            print("Standard Error:", result.stderr)
 
-            # Return the results as a JSON
-            return jsonify({
-                'prediction': prediction,
-                'probability': probability
-            })
+            if result.returncode == 0:
+                df = pd.read_csv(StringIO(result.stdout))
+                print(df)
+
+                print("Feeding the data to the AI")
+
+                # Feed it to the AI and get the outputs
+                prediction, probability = predict_input(df)
+
+                print("Returning the ouput...")
+
+                prediction = str(prediction)
+                probability = str(probability)
+
+                # Return the results as a JSON
+                return jsonify({
+                    'prediction': prediction,
+                    'probability': probability
+                })
         
         except Exception as e:
             return jsonify({'status': 'error', 'message': str(e)})

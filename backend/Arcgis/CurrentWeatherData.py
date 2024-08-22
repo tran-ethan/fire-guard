@@ -9,6 +9,9 @@ def addWeatherData(lat, lon):
 
     # Create a dictionary to hold new column data
     new_columns = {
+        "lat": [],
+        "lon": [],
+        "date": [],
         "elevation": [],
         "temp_c": [],
         "max_temp_c": [],
@@ -61,6 +64,10 @@ def addWeatherData(lat, lon):
         wind_kph = round(daily.Variables(5).ValuesAsNumpy()[0], 3)
         wind_dir = round(daily.Variables(6).ValuesAsNumpy()[0], 3)
 
+        new_columns["lat"].append(lat)
+        new_columns["lon"].append(lon)
+        new_columns["date"].append(formatted_date)
+
         new_columns["elevation"].append(response.Elevation())
         new_columns["temp_c"].append(temp_c)
         new_columns["max_temp_c"].append(max_temp_c)
@@ -91,8 +98,7 @@ def addWeatherData(lat, lon):
         new_columns["totalsnow_cm"].append(0.0)
 
     weather_df = pd.DataFrame(new_columns)
-    formatted_date = now.strftime('%y-%m-%d_%H-%M-%S')
-    weather_df.to_csv(f"temp/{formatted_date}.csv", index=False)
+    print(weather_df.to_csv(index=False))
 
 if __name__ == "__main__":
 
