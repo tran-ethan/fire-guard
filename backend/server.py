@@ -7,9 +7,13 @@ import numpy
 
 app = Flask(__name__)
 
-model_from_disk = joblib.load('../model/model.joblib')
+def load_model():
+    model = joblib.load('../model/model.joblib')
+    return model
 
 def predict_input(input_df):
+    # load the model
+    model_from_disk = load_model()
     # Get columns
     input_columns = model_from_disk['input_cols']
     # Make month column
@@ -46,7 +50,7 @@ def fire_analysis():
             # Feed it to the AI and get the outputs
             prediction, probability = predict_input(df)
 
-            # Return the results as JSON
+            # Return the results as a JSON
             return jsonify({
                 'prediction': prediction,
                 'probability': probability

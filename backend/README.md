@@ -40,9 +40,14 @@ Data processing part of the Fire Guard web application.
     conda activate <EnvName>
     ```
 
-3. **Install the additional packages**
+3. **Install pip**
     ```bash
-    pip install flask scikit-learn joblib pandas numpy
+    conda install pip
+    ```
+
+4. **Install the additional packages**
+    ```bash
+    pip install flask gunicorn scikit-learn joblib pandas numpy
     ```
     
 ## Scripts
