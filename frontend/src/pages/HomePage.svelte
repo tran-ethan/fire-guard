@@ -1,7 +1,7 @@
 <script lang="ts">
   import TryButton from "../home/TryButton.svelte";
   import About from "../home/About.svelte";
-    import Collaborators from "../home/Team.svelte";
+    import Team from "../home/Team.svelte";
 
   /**
    * @param id html id of the element to scroll to
@@ -37,7 +37,7 @@
     <img src="sword.png" class="sword" id="sword"/>
   </div>
   <About />
-  <Collaborators />
+  <Team />
   <TryButton />
 </body>
 
