@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 import subprocess
 import joblib
 import pandas as pd
 from io import StringIO
 
 app = Flask(__name__)
+CORS(app) # enable routes for all routes
 
 model = joblib.load('../model/model-xgb.joblib')
 

@@ -47,7 +47,7 @@ Data processing part of the Fire Guard web application.
 
 4. **Install the additional packages**
     ```bash
-    pip install flask gunicorn scikit-learn joblib pandas numpy xgboost
+    pip install flask flask-cors gunicorn scikit-learn joblib pandas numpy xgboost 
     ```
     
 ## Scripts
