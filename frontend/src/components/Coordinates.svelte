@@ -47,6 +47,32 @@
   function predict(lat: number, lon: number) {
     const fireMarker = createFireMarker(30, 30);
     fireMarker.setLngLat([lon, lat]).addTo(map);
+
+    // HTTP post to backend server
+
+    interface PostData {
+      args: string[];
+    }
+
+    const data: PostData = {
+      args: ["--lat", lat.toString(), "--lon", lon.toString()]
+    };
+
+    // Make the POST request using fetch
+    fetch('http://18.217.35.228:5000/fire-analysis', {
+      method: 'POST', // Specify the request method as POST
+      headers: {
+        'Content-Type': 'application/json', // Specify the content type
+      },
+      body: JSON.stringify(data) // Convert the data object to a JSON string
+    })
+    .then(response => response.json())
+    .then((data: any) => { // Specify the type of the response data
+      console.log('Success:', data); // Handle the response data
+    })
+    .catch((error: Error) => {
+      console.error('Error:', error); // Handle any errors
+    });
     map.flyTo({
         center: [lat, lon],
         zoom: 9,
