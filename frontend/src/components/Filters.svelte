@@ -27,6 +27,7 @@
     "Quebec",
     "Saskatchewan",
     "Yukon",
+    "All the Provinces"
   ];
 
   function toggleFiltersRotation() {

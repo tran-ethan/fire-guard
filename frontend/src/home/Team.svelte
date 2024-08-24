@@ -195,16 +195,16 @@ margin-top: 591%;
 </div>
 
 <div class="txt" id="et-txt">
-    Upcoming Computer Engineering Student at <br> McGill University
+    Incoming Computer Engineering Student at <br> McGill University
 </div>
 <div class="txt" id="gab-txt">
-    Upcoming Electrical Engineering Student at <br> Polytechnique Montréal
+    Incoming Electrical Engineering Student at <br> Polytechnique Montréal
 </div>
 <div class="txt" id="an-txt">
-    Upcoming Computer Science Student at <br> Concordia University
+    Incoming Computer Science Student at <br> Concordia University
 </div>
 <div class="txt" id="par-txt">
-    Upcoming Software Engineering Student at <br> McGill University
+    Incoming Software Engineering Student at <br> McGill University
 </div>
 
 
