@@ -76,7 +76,7 @@
     map.flyTo({
         center: [lat, lon],
         zoom: 9,
-        speed: 0.2,
+        speed: 1,
         curve: 1,
         easing(t) {
             return t;
