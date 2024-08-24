@@ -1,4 +1,5 @@
 <style>
+
     #team{
         margin-top: 400%;
     margin-left: 34%;
@@ -9,7 +10,7 @@
     }
     .rectangle {
     width: 30%;   /* Width of the rectangle */
-    height: 600px;  /* Height of the rectangle */
+    height: 62%;  /* Height of the rectangle */
     background-color: #cc97974c;  /* Background color of the rectangle */
     position: absolute;
     border-width: 6px;
@@ -35,7 +36,7 @@ margin-top: 591%;
   .ethan-img{
     width: 10%;
     margin-top: 430%;
-    margin-left: 25%;
+    margin-left: 24.5%;
     position: absolute;
   }
   .gab-img{
@@ -106,7 +107,7 @@ margin-top: 591%;
     }
     #gab-name{
         margin-top: 482%;
-        margin-left: 58%;
+        margin-left: 58.5%;
     }
     #anais-name{
         margin-top: 603%;
@@ -116,6 +117,30 @@ margin-top: 591%;
         margin-top: 603%;
         margin-left: 59.5%;
     }
+    .txt{
+        font-size: 125%;
+        position: absolute;
+        color: #60151584;
+        text-align: center;
+    }
+    #et-txt{
+        
+        margin-top: 492%;
+        margin-left: 17.5%;
+    }
+    #gab-txt{
+        margin-top: 492%;
+        margin-left: 58%;
+    }
+    #an-txt{
+        margin-top: 614%;
+        margin-left: 18.8%;
+    }
+    #par-txt{
+        margin-top: 614%;
+        margin-left: 57.5%;
+    }
+    
         
         
 
@@ -168,3 +193,18 @@ margin-top: 591%;
 <div class="name" id="parsa-name">
     Parsa Jafarian
 </div>
+
+<div class="txt" id="et-txt">
+    Upcoming Computer Engineering Student at <br> McGill University
+</div>
+<div class="txt" id="gab-txt">
+    Upcoming Electrical Engineering Student at <br> Polytechnique Montréal
+</div>
+<div class="txt" id="an-txt">
+    Upcoming Computer Science Student at <br> Concordia University
+</div>
+<div class="txt" id="par-txt">
+    Upcoming Software Engineering Student at <br> McGill University
+</div>
+
+
