@@ -40,8 +40,8 @@ def fire_analysis():
     #args_str = ' '.join(args)  # Convert list to string
 
     command = [
-        #r"C:\Users\Gaby\anaconda3\envs\arcgis_env\python.exe", # Windows
-        '/home/ubuntu/miniconda3/envs/arcgis_env/bin/python3',  # Linux, Full path to Python in the conda environment
+        r"C:\Users\Gaby\anaconda3\envs\arcgis_env\python.exe", # Windows
+        #'/home/ubuntu/miniconda3/envs/arcgis_env/bin/python3',  # Linux, Full path to Python in the conda environment
         'Arcgis/CurrentWeatherData.py'
     ] + args
 
