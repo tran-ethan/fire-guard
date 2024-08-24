@@ -8738,7 +8738,7 @@ X,Y,osm_id,osm_type,completeness,amenity,healthcare,name,operator,source,special
 -79.5542879259095,43.6315649250325,"6310130603",node,12.5,dentist,dentist,Etobicoke Denture Clinic,,,,,,,,,,,,,,,,,,,,,,,,67675685,1,2019/03/01 07:25:56+00,d75f9a52a1b640dbabb7f027b7d29470
 -79.5544985631362,43.6316805952963,"6310130604",node,12.5,,alternative,Health for Life Chiropractor,,,chiropractic,,,,,,,,,,,,,,,,,,,,,67675685,1,2019/03/01 07:25:56+00,1458afbea40f4de7923d7fa8ce1329c3
 -79.5555918147672,43.6317318925437,"6310254361",node,12.5,dentist,dentist,Cloverdale Dental Group,,,,,,,,,,,,,,,,,,,,,,,,67677941,2,2019/03/01 08:56:55+00,bec1fc5d1d2341c08f5c97e070372f4c
--79.5558226523806,43.6314835367527,"6310254362",node,12.5,dentist,dentist,Etobicoke Orthodontics  & Etobicoke Oral Surgery,,,,,,,,,,,,,,,,,,,,,,,,67676818,1,2019/03/01 08:15:45+00,ca4a72c3a03f47199a89c29555eb816d
+-79.5558226523806,43.6314835367527,"6310254362",node,12.5,dentist,dentist,Etobicoke Orthodontics & Etobicoke Oral Surgery,,,,,,,,,,,,,,,,,,,,,,,,67676818,1,2019/03/01 08:15:45+00,ca4a72c3a03f47199a89c29555eb816d
 -79.5521098045508,43.6323023648737,"6310367716",node,15.625,pharmacy,pharmacy,Cloverdale Pharmacy,,,,,,,,,,,yes,,,,,,,,,,,,,67678424,1,2019/03/01 09:15:55+00,322593009eb6418d85c67d33512d2488
 -79.5397278057258,43.6357812737859,"6310788592",node,9.375,,alternative,Visionary Health,,,,,,,,,,,,,,,,,,,,,,,,67685354,1,2019/03/01 13:01:26+00,165d25091b4144f3a2e14119d2fd9a76
 -79.5398910013806,43.635895351488,"6310788590",node,12.5,clinic,clinic,ReGen Medical Clinic,,,,,,,,,,,,,,,,,,,,,,,,118840039,4,2022/03/23 22:02:43+00,a53e624cc4e541969a17eef64f217bdb

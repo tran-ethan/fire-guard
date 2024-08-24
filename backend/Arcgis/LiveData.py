@@ -290,11 +290,13 @@ if __name__ == "__main__":
         # Retrieve the old df and merge it with the new one
 
         save_path = "data/Active_Fires.csv"
+        existing_df = pd.read_csv("data/Active_Fires.csv")
         dfLength = len(df)
         df = df.drop_duplicates(subset=['lat', 'lon', 'date'])
-        df.to_csv(save_path, index=False)
         newDfLength = len(df)
         numDuplicates = dfLength - newDfLength
+        merged_df = pd.concat([df, existing_df], axis=0, ignore_index=True)
+        merged_df.to_csv(save_path, index=False)
         print(f"Duplicates removed: {numDuplicates}")
         print(f"Null values removed: {numNa}")
         print("Added data:")

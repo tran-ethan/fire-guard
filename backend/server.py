@@ -35,7 +35,6 @@ def fire_analysis():
     # Extract arguments from the request
     args = request.json.get('args', [])
     print(f"Received arguments: {args}")
-    #args_str = ' '.join(args)  # Convert list to string
 
     command = [
         r"C:\Users\Gaby\anaconda3\envs\arcgis_env\python.exe", # Windows
@@ -82,6 +81,19 @@ def fire_analysis():
         
         except Exception as e:
             return jsonify({'status': 'error', 'message': str(e)})
+        
+@app.route('/get-fires', methods=['GET'])
+def get_fires():
+    old_df = pd.read_csv("data/2000-2021_fires+weather.csv")
+    old_json = old_df.to_json(orient='records')
+
+    live_df = pd.read_csv("Arcgis/data/Active_Fires.csv")
+    live_json = live_df.to_json(orient='records')
+
+    return jsonify({
+        'old': old_json,
+        'live': live_json
+    })
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
