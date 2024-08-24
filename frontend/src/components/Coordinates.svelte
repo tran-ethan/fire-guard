@@ -74,9 +74,9 @@
       console.error('Error:', error); // Handle any errors
     });
     map.flyTo({
-        center: [lat, lon],
-        zoom: 9,
-        speed: 1,
+        center: [lon, lat],
+        zoom: 12,
+        speed: 0.9,
         curve: 1,
         easing(t) {
             return t;
