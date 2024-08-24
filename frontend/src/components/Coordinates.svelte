@@ -45,9 +45,6 @@
   }
 
   function predict(lat: number, lon: number) {
-    const fireMarker = createFireMarker(30, 30);
-    fireMarker.setLngLat([lon, lat]).addTo(map);
-
     // HTTP post to backend server
 
     interface PostData {
@@ -69,6 +66,8 @@
     .then(response => response.json())
     .then((data: any) => { // Specify the type of the response data
       console.log('Success:', data); // Handle the response data
+      const fireMarker = createFireMarker(30, 30, undefined, data);
+      fireMarker.setLngLat([lon, lat]).addTo(map);
     })
     .catch((error: Error) => {
       console.error('Error:', error); // Handle any errors
@@ -82,6 +81,7 @@
             return t;
         }
     });
+
   }
 </script>
 
