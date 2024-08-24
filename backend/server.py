@@ -57,6 +57,8 @@ def fire_analysis():
                 df = pd.read_csv(StringIO(result.stdout))
                 print(df)
 
+                df_json = df.to_json(orient='records')
+
                 print("Feeding the data to the AI")
 
                 # Feed it to the AI and get the outputs
@@ -70,8 +72,6 @@ def fire_analysis():
 
                 prediction = str(prediction)
                 probability = str(probability)
-
-                df_json = df.to_json(orient='records')
 
                 # Return the results as a JSON
                 return jsonify({

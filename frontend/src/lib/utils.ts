@@ -39,7 +39,7 @@ export function createFireMarker(width?: number, height?: number, color?: string
             <strong>Date:</strong> ${date}
         </div>`;
         
-    popup.setLngLat([lat, lon])
+    popup.setLngLat([lon, lat])
         .setHTML(popupContent)
         .addTo(map);
   });
