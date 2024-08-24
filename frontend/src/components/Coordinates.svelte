@@ -1,5 +1,7 @@
 <script lang="ts">
+    import { get } from "svelte/store";
   import { coordinatesY } from "../lib/store";
+  import { showPopup } from "../lib/store";
   import { createFireMarker } from "../lib/utils";
 
   let coordinatesRotated = false;
@@ -43,6 +45,16 @@
   function onMouseLeave() {
     isHovered = false;
   }
+  function handleBttnClick(){
+    
+    showPopup.set(true);
+    showPopup.subscribe(value => {
+    console.log('showPopup value:', value);
+  });
+    predict(parseFloat(latInput), parseFloat(longInput));
+    
+  }
+
 
   function predict(lat: number, lon: number) {
     const fireMarker = createFireMarker(30, 30);
@@ -112,7 +124,8 @@
 <div id="submit-button" class="text" style={combinedStyleBttn}>
   <button
     class="button-30"
-    on:click={() => predict(parseFloat(latInput), parseFloat(longInput))}
+    on:click= {handleBttnClick}
+  
     >Predict</button
   >
 </div>
