@@ -18,7 +18,7 @@
     <header class="header">
       <img src="logo.png" alt="Icon" class="icon" />
       <h1 class="title" on:click={() => window.location.href= "/"}>Fire Guard</h1>
-      <h1 class="header-text" on:click={() => scrollToElement("sword")}>About</h1>
+      <h1 class="header-text" on:click={() => scrollToElement("about")}>About</h1>
       <h1 class="header-text" on:click={() => window.location.href = "/map"}>Map</h1>
       <h1 class="header-text" on:click={() => scrollToElement("team")}>Team</h1>
     </header>
@@ -147,6 +147,7 @@
     transform: rotate(52deg);
     margin-top: 10%;
     margin-left: 45%;
-    opacity: 0.85;
+    opacity: 0;
+
   }
 </style>
