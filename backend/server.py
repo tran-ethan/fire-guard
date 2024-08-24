@@ -1,20 +1,16 @@
 from flask import Flask, render_template, request, jsonify
-import sklearn
 import subprocess
 import joblib
 import pandas as pd
-import numpy
 from io import StringIO
 
 app = Flask(__name__)
 
-def load_model():
-    model = joblib.load('../model/model.joblib')
-    return model
+model = joblib.load('../model/model-xgb.joblib')
 
 def predict_input(input_df):
     # load the model
-    model_from_disk = load_model()
+    model_from_disk = model
     # Get columns
     input_columns = model_from_disk['input_cols']
     # Make month column
