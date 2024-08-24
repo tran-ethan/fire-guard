@@ -66,7 +66,9 @@
     .then(response => response.json())
     .then((data: any) => { // Specify the type of the response data
       console.log('Success:', data); // Handle the response data
-      const fireMarker = createFireMarker(30, 30, undefined, data);
+      const fields = data.weather.split(",");
+      const latValue = parseFloat(fields[0].split(':')[1]);
+      const fireMarker = createFireMarker(30, 30, undefined, data.weather, lon , lat, map);
       fireMarker.setLngLat([lon, lat]).addTo(map);
     })
     .catch((error: Error) => {

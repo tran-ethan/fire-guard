@@ -104,3 +104,13 @@ home:hover{
     background-color: #f9f9f9;
   }
 }
+
+.popup-box {
+  background-color: grey;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  max-width: 200px;
+  word-wrap: break-word;
+}
