@@ -62,15 +62,22 @@ def fire_analysis():
                 # Feed it to the AI and get the outputs
                 prediction, probability = predict_input(df)
 
-                print("Returning the ouput...")
+                print("Returning the output...")
+
+                probability -= 0.15
+
+                if (probability < 0): prediction = 0
 
                 prediction = str(prediction)
                 probability = str(probability)
 
+                df_json = df.to_json(orient='records')
+
                 # Return the results as a JSON
                 return jsonify({
                     'prediction': prediction,
-                    'probability': probability
+                    'probability': probability,
+                    'weather': df_json
                 })
         
         except Exception as e:
