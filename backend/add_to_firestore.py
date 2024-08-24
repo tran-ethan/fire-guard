@@ -28,10 +28,6 @@ def add_row_to_batch(index: int, row: pd.Series, batch: firestore.WriteBatch, co
         ref = db.collection(collection).document()
         data = {key: value for key, value in row.items()}
 
-        # If 'date' key is present, convert it to a Firestore timestamp
-        if "date" in data:
-            data["date"] = pd.to_datetime(data["date"]).to_pydatetime()
-
         # Set data for the document in the batch operation
         batch.set(ref, data)
         print(f"Row {index} added to batch operation.")
@@ -81,13 +77,14 @@ def add_dataset_to_firestore(dataset: pd.DataFrame, collection: str):
     print("All data added to Firestore.")
 
 if __name__ == "__main__":
+
     parser = argparse.ArgumentParser(description="Add data to Firestore.")
-    parser.add_argument("--path", type=str, default="./data/2000-2021+2023-2024.csv",
-                        help="The path to the dataset. Defaults to ./data/2000-2021+2023-2024.csv.")
+    parser.add_argument("--path", type=str, default="./Arcgis/data/Active_Fires.csv",
+                        help="The path to the dataset. Defaults to ./Arcgis/data/Active_Fires.csv.")
     parser.add_argument("--path-to-credentials", type=str, default="./.firebase-credentials.json",
                         help="The path to the Firebase credentials. Defaults to ./.firebase-credentials.json.")
-    parser.add_argument("--collection", type=str, default="wildfires",
-                        help="The collection to add the data to. Defaults to 'wildfires'.")
+    parser.add_argument("--collection", type=str, default="livedata",
+                        help="The collection to add the data to. Defaults to 'livedata'.")
     
     args = parser.parse_args()
 

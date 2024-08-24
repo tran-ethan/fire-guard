@@ -1,13 +1,19 @@
 from arcgis.gis import GIS
-import requests
+import openmeteo_requests
+import geopandas as gpd
+from shapely.geometry import Point
+import numpy as np
 import json
 import traceback
 import pandas as pd
 import os
 from datetime import datetime
 import pytz
+import time
 
-apiKey = os.getenv("WEATHER_API_KEY")
+canada_boundaries = gpd.read_file('data/canada_boundary.geojson')
+HOUR = 3600
+retrying = False
 
 timezoneDict = {
     'MDT': 'America/Denver', # UTC-6
@@ -29,8 +35,7 @@ def getDataset():
     gis = GIS("https://www.arcgis.com")
 
     # Get Active WildFires in Canada dataset
-        # wildfire_item = gis.content.get(dataset_id)
-    searchRes= gis.content.search(query="Active Wildfires in Canada", item_type="Feature Layer", max_items=10)
+    searchRes = gis.content.search(query="Active Wildfires in Canada", item_type="Feature Layer", max_items=10)
     wildfire_item = None
 
     for item in searchRes:
@@ -74,10 +79,12 @@ def getDataset():
                     df = pd.DataFrame(query_result.features)
                     csv_file_path = os.path.join("data", "rawData.csv")
                     df.to_csv(csv_file_path, index=False)  # Convert the pandas DataFrame to a csv
+                    print("Sucessfully retrieved the dataset")
+                    retrying = False
                     return df
-                    print("Sucessfully downloaded the dataset")
                 else:
-                    print("The result of the query is empty")
+                    print("The result of the query is empty, retrying in one hour")
+                    retrying = True
                     return None
             except Exception as e:
                 traceback.print_exc()
@@ -100,17 +107,31 @@ def cleanDataset(data):
     attributesData = [cleanedDict["features"][i] for i in range(len(cleanedDict['features']))]
 
     df = pd.DataFrame(attributesData)
-    df = df.drop(['Agency', 'Fire_Name', 'ObjectId', 'GlobalID', 'Stage_of_Control', 'Time_Zone'], axis=1)
+    df = df.drop(['Agency', 'Fire_Name', 'ObjectId', 'GlobalID', 'Stage_of_Control', "Time_Zone"], axis=1)
     df.rename(columns={'Hectares__Ha_': 'hectares'}, inplace=True)
     df.rename(columns={'Latitude': 'lat'}, inplace=True)
     df.rename(columns={'Longitude': 'lon'}, inplace=True)
     df['Start_Date'] = df['Start_Date'].astype(str)
 
-    # format the time to datetime and timezone to utc
+    len_df = len(df)
+    indicesToDrop = []
+
+    # format the time to datetime and timezone to utc and check if points are inside Canada
     for x in df.index:
-        unixTime = int(df.loc[x, "Start_Date"])
-        dtTime = convertDate(unixTime)
-        df.loc[x, "Start_Date"] = dtTime
+        lat = df.loc[x, "lat"]
+        lon = df.loc[x, "lon"]
+        if (not isWithinCanada(lat,lon)):
+            indicesToDrop.append(x)
+        else:
+            unixTime = int(df.loc[x, "Start_Date"])
+            dtTime = convertDate(unixTime)
+            df.loc[x, "Start_Date"] = dtTime
+    
+    df = df.drop(indicesToDrop)
+    len_cleaned_df = len(df)
+    rows_not_Canada = len_df - len_cleaned_df
+
+    print(f"Rows not in Canada removed: {rows_not_Canada}")
 
     df.rename(columns={'Start_Date': 'date'}, inplace=True)
 
@@ -118,85 +139,94 @@ def cleanDataset(data):
 
 def addWeatherData(df):
 
-    # Specify the number of days for the forecast
-    days = 3
-
     # Create a dictionary to hold new column data
     new_columns = {
-        "condition": [],
+        "elevation": [],
         "temp_c": [],
+        "max_temp_c": [],
+        "min_temp_c": [],
         "wind_kph": [],
         "wind_dir": [],
         "precip_mm": [],
         "humidity": [],
+        "pressure_hPa": [],
+        "soil_temp_c": [],
+        "soil_moisture": [],
+        "totalsnow_cm": []
     }
 
-    # Add forecast columns for each day
-    for i in range(1, days + 1):
-        new_columns[f"condition_f{i}"] = []
-        new_columns[f"maxtemp_c_f{i}"] = []
-        new_columns[f"avgtemp_c_f{i}"] = []
-        new_columns[f"maxwind_kph_f{i}"] = []
-        new_columns[f"totalprecip_mm_f{i}"] = []
-        new_columns[f"totalsnow_cm_f{i}"] = []
-        new_columns[f"avghumidity_f{i}"] = []
-        new_columns[f"daily_will_it_rain_f{i}"] = []
-        new_columns[f"daily_will_it_snow_f{i}"] = []
+    # Setup the Open-Meteo API client
+    openmeteo = openmeteo_requests.Client()
 
-    # For each row, add weather data
     for x in df.index:
+
         lat = df.loc[x, "lat"]
         lon = df.loc[x, "lon"]
-        url = f"http://api.weatherapi.com/v1/forecast.json?key={apiKey}&q={lat},{lon}&days={days}"
-        response = requests.get(url)
+        date = df.loc[x, "date"]
+        
+        url = "https://api.open-meteo.com/v1/forecast"
+
+        params = {
+            "latitude": lat,
+            "longitude": lon,
+            "start_date": date,
+            "end_date": date,
+            "hourly": ["relative_humidity_2m", "surface_pressure", "soil_temperature_0cm", "soil_moisture_0_to_1cm"],
+            "daily": ["temperature_2m_max", "temperature_2m_min", "temperature_2m_mean", "rain_sum", "snowfall_sum", "wind_speed_10m_max", "wind_direction_10m_dominant"]
+        }
+
+        responses = openmeteo.weather_api(url, params=params)
+        response = responses[0]
 
         # Check if the request was successful
-        if response.status_code == 200:
-            data = response.json()
+        if (response):
 
-            # Current weather data
-            new_columns["condition"].append(data["current"]["condition"]["text"])
-            new_columns["temp_c"].append(data["current"]["temp_c"])
-            new_columns["wind_kph"].append(data["current"]["wind_kph"])
-            new_columns["wind_dir"].append(data["current"]["wind_dir"])
-            new_columns["precip_mm"].append(data["current"]["precip_mm"])
-            new_columns["humidity"].append(data["current"]["humidity"])
+            hourly = response.Hourly()
+            humidity = round(np.mean(hourly.Variables(0).ValuesAsNumpy()), 3)
+            pressure_hPa = round(np.mean(hourly.Variables(1).ValuesAsNumpy()), 3)
+            soil_temp_c = round(np.mean(hourly.Variables(2).ValuesAsNumpy()), 3)
+            soil_moisture = round(np.mean(hourly.Variables(3).ValuesAsNumpy()), 3)
 
-            # Forecast data
-            for i in range(len(data["forecast"]["forecastday"])):
-                rowData = data["forecast"]["forecastday"][i]["day"]
-                new_columns[f"condition_f{i+1}"].append(rowData["condition"]["text"])
-                new_columns[f"maxtemp_c_f{i+1}"].append(rowData["maxtemp_c"])
-                new_columns[f"avgtemp_c_f{i+1}"].append(rowData["avgtemp_c"])
-                new_columns[f"maxwind_kph_f{i+1}"].append(rowData["maxwind_kph"])
-                new_columns[f"totalprecip_mm_f{i+1}"].append(rowData["totalprecip_mm"])
-                new_columns[f"totalsnow_cm_f{i+1}"].append(rowData["totalsnow_cm"])
-                new_columns[f"avghumidity_f{i+1}"].append(rowData["avghumidity"])
-                new_columns[f"daily_will_it_rain_f{i+1}"].append(rowData["daily_will_it_rain"])
-                new_columns[f"daily_will_it_snow_f{i+1}"].append(rowData["daily_will_it_snow"])
+            daily = response.Daily()
+            max_temp_c = round(daily.Variables(0).ValuesAsNumpy()[0], 3)
+            min_temp_c = round(daily.Variables(1).ValuesAsNumpy()[0], 3)
+            temp_c = round(daily.Variables(2).ValuesAsNumpy()[0], 3)
+            precip_mm = round(daily.Variables(3).ValuesAsNumpy()[0], 3)
+            totalsnow_cm = round(daily.Variables(4).ValuesAsNumpy()[0], 3)
+            wind_kph = round(daily.Variables(5).ValuesAsNumpy()[0], 3)
+            wind_dir = round(daily.Variables(6).ValuesAsNumpy()[0], 3)
+
+            new_columns["elevation"].append(response.Elevation())
+            new_columns["temp_c"].append(temp_c)
+            new_columns["max_temp_c"].append(max_temp_c)
+            new_columns["min_temp_c"].append(min_temp_c)
+            new_columns["wind_kph"].append(wind_kph)
+            new_columns["wind_dir"].append(wind_dir)
+            new_columns["precip_mm"].append(precip_mm)
+            new_columns["humidity"].append(humidity)
+            new_columns["pressure_hPa"].append(pressure_hPa)
+            new_columns["soil_temp_c"].append(soil_temp_c)
+            new_columns["soil_moisture"].append(soil_moisture)
+            new_columns["totalsnow_cm"].append(totalsnow_cm)
         else:
-            print("Error:", response.status_code, response.text)
-            new_columns["condition"].append("")
-            new_columns["temp_c"].append(0.0)
-            new_columns["wind_kph"].append(0.0)
-            new_columns["wind_dir"].append("")
-            new_columns["precip_mm"].append(0.0)
-            new_columns["humidity"].append(0)
 
-            for i in range(1, days + 1):
-                new_columns[f"condition_f{i}"].append("")
-                new_columns[f"maxtemp_c_f{i}"].append(0.0)
-                new_columns[f"avgtemp_c_f{i}"].append(0.0)
-                new_columns[f"maxwind_kph_f{i}"].append(0.0)
-                new_columns[f"totalprecip_mm_f{i}"].append(0.0)
-                new_columns[f"totalsnow_cm_f{i}"].append(0.0)
-                new_columns[f"avghumidity_f{i}"].append(0.0)
-                new_columns[f"daily_will_it_rain_f{i}"].append(0.0)
-                new_columns[f"daily_will_it_snow_f{i}"].append(0.0)
+            print("Error calling the API")
+
+            new_columns["elevation"].append(0.0)
+            new_columns["temp_c"].append(0.0)
+            new_columns["max_temp_c"].append(0.0)
+            new_columns["min_temp_c"].append(0.0)
+            new_columns["wind_kph"].append(0.0)
+            new_columns["wind_dir"].append(0.0)
+            new_columns["precip_mm"].append(0.0)
+            new_columns["humidity"].append(0.0)
+            new_columns["pressure_hPa"].append(0.0)
+            new_columns["soil_temp_c"].append(0.0)
+            new_columns["soil_moisture"].append(0.0)
+            new_columns["totalsnow_cm"].append(0.0)
 
         percentage = (x + 1) / len(df) * 100
         print(f"{percentage:.2f}% done")
-
 
     # Create a new DataFrame for the new columns
     weather_df = pd.DataFrame(new_columns, index=df.index)
@@ -207,24 +237,29 @@ def addWeatherData(df):
     return df
 
 def convertDate(time):
-
     timeSeconds = time / 1000.0
-    dtObj = datetime.utcfromtimestamp(timeSeconds)
-    return dtObj.strftime('%Y-%m-%d %H:%M:%S')
+    dtObj = datetime.fromtimestamp(timeSeconds)
+    return dtObj.strftime('%Y-%m-%d')
 
 def convertTimezone(timezone, time):
-
     timezoneName = pytz.timezone(timezoneDict[timezone])
-    timeFormat = "%Y-%m-%d %H:%M:%S"
+    timeFormat = "%Y-%m-%d"
     dtObj = datetime.strptime(time, timeFormat)
     localTime = timezoneName.localize(dtObj)
-    utcTime = localTime.astimezone(pytz.utc).strftime('%Y-%m-%d %H:%M:%S')
+    utcTime = localTime.astimezone(pytz.utc).strftime(timeFormat)
     return utcTime
+
+def isWithinCanada(lat, lon):
+    point = Point(lon, lat)
+    return canada_boundaries.contains(point).any()
 
 if __name__ == "__main__":
 
     print("Retrieving the dataset...")
-    res = getDataset()
+
+    for i in range(3):
+        res = getDataset()
+        if (not retrying): break
 
     if (res is not None):
 
@@ -251,22 +286,20 @@ if __name__ == "__main__":
         # Writing df as csv
         print("Writing df as csv...")
         os.remove("data/rawData.csv")
-        existing_df = pd.read_csv("data/Previous_Fires.csv")
-        merged_df = pd.concat([df, existing_df], axis=0, ignore_index=True)
-        dfLength = len(merged_df)
-        merged_df = merged_df.drop_duplicates()
-        merged_df.to_csv("data/Previous_Fires.csv", index=False)
-        newDfLength = len(merged_df)
+
+        # Retrieve the old df and merge it with the new one
+
+        save_path = "data/Active_Fires.csv"
+        dfLength = len(df)
+        df = df.drop_duplicates(subset=['lat', 'lon', 'date'])
+        df.to_csv(save_path, index=False)
+        newDfLength = len(df)
         numDuplicates = dfLength - newDfLength
         print(f"Duplicates removed: {numDuplicates}")
         print(f"Null values removed: {numNa}")
-        numNewData = currentLength - numDuplicates
-        newDf = merged_df.tail(currentLength-numDuplicates)
-        csv_file_path = os.path.join("data", "Active_Fires.csv")
-        newDf.to_csv(csv_file_path, index=False)  # Convert the pandas DataFrame to a csv
         print("Added data:")
-        if (numNewData > 0):
-            print(newDf)
+        if (newDfLength > 0):
+            print(df)
         else:
             print("No data added")
         print("Done!")
