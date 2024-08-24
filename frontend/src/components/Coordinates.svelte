@@ -73,6 +73,15 @@
     .catch((error: Error) => {
       console.error('Error:', error); // Handle any errors
     });
+    map.flyTo({
+        center: [lat, lon],
+        zoom: 9,
+        speed: 0.2,
+        curve: 1,
+        easing(t) {
+            return t;
+        }
+    });
   }
 </script>
 
@@ -88,15 +97,17 @@
   >
 </div>
 
+<div id="lat-text" class="text" style={combinedStyle}>
+  Latitude:
+  <input type="text" bind:value={latInput} class="text-field" />
+</div>
+
 <div id="long-text" class="text" style={combinedStyle}>
   Longitude:
   <input type="text" bind:value={longInput} class="text-field" />
 </div>
 
-<div id="lat-text" class="text" style={combinedStyle}>
-  Latitude:
-  <input type="text" bind:value={latInput} class="text-field" />
-</div>
+
 
 <div id="submit-button" class="text" style={combinedStyleBttn}>
   <button
@@ -162,14 +173,14 @@
   }
 
   #long-text {
-    top: 250px;
+    top: 313px;
     left: 97px;
     padding: 10px;
     border-radius: 5px;
   }
 
   #lat-text {
-    top: 313px;
+    top: 250px;
     left: 97px;
     padding: 10px;
     border-radius: 5px;
