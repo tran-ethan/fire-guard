@@ -1,14 +1,15 @@
 <script>
     import { showPopup } from "../lib/store";
+    import { popupText } from "../lib/store";
+    import { firePrediction } from "../lib/store";
 
     function closePopup() {
-    showPopup.set(false);
-  }
+      showPopup.set(false);
+    }
 </script>
 
-
 <style>
-    .popup-wrapper {
+.popup-wrapper {
   position: absolute;
   top: 0%;
   left: 0%;
@@ -17,12 +18,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
   transition: opacity 0.3s ease, visibility 0.3s ease;
   opacity: 1;
   visibility: visible;
 }
- .popup-wrapper.hidden {
+.popup-wrapper.hidden {
   opacity: 0;
   visibility: hidden;
 }
@@ -48,8 +48,6 @@
 
 .popup h2 {
   margin-top: 0;
-  color: #3333339c;
-  
 }
 .popup .close {
   position: absolute;
@@ -83,11 +81,19 @@
 {#if $showPopup}
 <div class="popup-wrapper">
 	<div class="popup">
-		<h2>Hello</h2>
+    {#if $firePrediction}
+    <span style="color: red;">
+		  <h2>Wildfire</h2>
+    </span>
+    {:else}
+      <span style="color: green;">
+		  <h2>No wildfires</h2>
+    </span>
+    {/if}
 		<a class="close" href="#" on:click|preventDefault={closePopup}>&times;</a>
 		<div class="content">
-			Here is the prediction
+			{$popupText}
 		</div>
 	</div>
-    </div>
-    {/if}
+</div>
+{/if}

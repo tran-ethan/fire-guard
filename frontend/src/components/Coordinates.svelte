@@ -2,22 +2,13 @@
   import { coordinatesY } from "../lib/store";
   import { createFireMarker } from "../lib/utils";
   import  { showPopup } from "../lib/store";
+  import  { popupText } from "../lib/store";
+  import  { firePrediction } from "../lib/store";
   let coordinatesRotated = false;
   let longInput = "";
   let latInput = "";
   let isHovered = false;
   export let map: mapboxgl.Map;
-
-  function handleBttnClick(){
-    
-    showPopup.set(true);
-    showPopup.subscribe(value => {
-    console.log('showPopup value:', value);
-  });
-    predict(parseFloat(latInput), parseFloat(longInput));
-    
-  }
-
 
   let yPosition: number;
   $: yPosition = $coordinatesY;
@@ -57,7 +48,6 @@
 
   function predict(lat: number, lon: number) {
     // HTTP post to backend server
-
     interface PostData {
       args: string[];
     }
@@ -76,13 +66,27 @@
     })
     .then(response => response.json())
     .then((data: any) => { // Specify the type of the response data
-      console.log('Success:', data); // Handle the response data
+      console.log('Success:', data); // Log the response data
+
+      // Put firemarker with data
       const prediction = parseInt(data.prediction);
       const probability = parseFloat(data.probability);
       if (prediction === 1) {
         const fireMarker = createFireMarker(map, JSON.stringify(data.weather), probability, 30, 30);
-        fireMarker.setLngLat([lon, lat]).addTo(map);
+        fireMarker.setLngLat([lon, lat]).addTo(map);;
+        firePrediction.set(true)
+      } else {
+        firePrediction.set(false)
       }
+
+      // Pop up text
+      popupText.set(`Predicted at ${latInput}, ${longInput} with probability ${(probability * 100).toFixed(2)}%`);
+
+      // Show the popup
+      showPopup.set(true);
+      showPopup.subscribe(value => {
+        console.log('showPopup value:', value);
+      });
     })
     .catch((error: Error) => {
       console.error('Error:', error); // Handle any errors
@@ -126,7 +130,7 @@
 <div id="submit-button" class="text" style={combinedStyleBttn} >
   <button
     class="button-30"
-    on:click={handleBttnClick}
+    on:click={() => predict(parseFloat(latInput), parseFloat(longInput))}
     >Predict</button
   >
 </div>
