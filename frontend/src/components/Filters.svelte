@@ -3,6 +3,7 @@
   import "flatpickr/dist/flatpickr.min.css";
   import { filtersRotated } from "../lib/store";
   import { coordinatesY } from "../lib/store";
+    import { onMount } from "svelte";
   
 
   let coordinatesRotated = false;
@@ -26,8 +27,7 @@
     "Prince Edward Island",
     "Quebec",
     "Saskatchewan",
-    "Yukon",
-    "All the Provinces"
+    "Yukon"
   ];
 
   function toggleFiltersRotation() {
@@ -50,29 +50,33 @@
 
   function byDateChecked() {
     dateChecked = !dateChecked;
+    
     if (dateChecked) {
-      initializeFlatpickr();
       coordinatesY.update((currentY) => currentY + 80);
     } else {
       coordinatesY.update((currentY) => currentY - 80);
     }
   }
-  function initializeFlatpickr() {
+  function initializeFlatpickrStrt() {
     flatpickr("#start-date", { dateFormat: "d/m/Y" });
+  }
+  function initializeFlatpickrEnd() {
     flatpickr("#end-date", { dateFormat: "d/m/Y" });
   }
   function byProvinceChecked() {
     provinceChecked = !provinceChecked;
 
     if (provinceChecked) {
-      initializeFlatpickr();
       coordinatesY.update((currentY) => currentY + 200);
     } else {
       coordinatesY.update((currentY) => currentY - 200);
     }
   }
 
-  function filterProvinces() {}
+  onMount(() => {
+    flatpickr("#start-date", { dateFormat: "d/m/Y" });
+    flatpickr("#end-date", { dateFormat: "d/m/Y" });
+  });
 </script>
 
 <div id="filters" class="filters" on:click={toggleFiltersRotation}>
@@ -98,7 +102,8 @@
         id="start-date"
         placeholder="Start Date"
         class="text-field"
-        on:click={initializeFlatpickr}
+        readonly
+        on:click={initializeFlatpickrStrt()}
       />
       to
       <input
@@ -107,6 +112,8 @@
         id="end-date"
         placeholder="End Date"
         class="text-field"
+        readonly
+        on:click={initializeFlatpickrEnd()}
       />
     </div>
   {/if}
@@ -271,7 +278,7 @@
     background-color: rgba(180, 159, 155, 0.2);
   }
   .flatpickr-calendar {
-    z-index: 9999;
+    z-index: 99;
   }
   #text-field-province:focus + .dropdown-content {
     display: block;
