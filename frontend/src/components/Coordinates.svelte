@@ -1,12 +1,23 @@
 <script lang="ts">
   import { coordinatesY } from "../lib/store";
   import { createFireMarker } from "../lib/utils";
-
+  import  { showPopup } from "../lib/store";
   let coordinatesRotated = false;
   let longInput = "";
   let latInput = "";
   let isHovered = false;
   export let map: mapboxgl.Map;
+
+  function handleBttnClick(){
+    
+    showPopup.set(true);
+    showPopup.subscribe(value => {
+    console.log('showPopup value:', value);
+  });
+    predict(parseFloat(latInput), parseFloat(longInput));
+    
+  }
+
 
   let yPosition: number;
   $: yPosition = $coordinatesY;
@@ -115,7 +126,7 @@
 <div id="submit-button" class="text" style={combinedStyleBttn} >
   <button
     class="button-30"
-    on:click={() => predict(parseFloat(latInput), parseFloat(longInput))}
+    on:click={handleBttnClick}
     >Predict</button
   >
 </div>
