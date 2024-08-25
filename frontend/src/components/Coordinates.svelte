@@ -87,7 +87,8 @@
   }
 </script>
 
-<div
+<body>
+  <div
   class="coordinates"
   style={coordinatesStyle + hoverStyle}
   on:click={toggleCoordinatesRotation}
@@ -109,15 +110,18 @@
   <input type="text" bind:value={longInput} class="text-field" />
 </div>
 
-
-
-<div id="submit-button" class="text" style={combinedStyleBttn}>
+<div id="submit-button" class="text" style={combinedStyleBttn} >
   <button
     class="button-30"
     on:click={() => predict(parseFloat(latInput), parseFloat(longInput))}
     >Predict</button
   >
 </div>
+</body>
+
+
+
+
 
 <style>
   #last-char {
