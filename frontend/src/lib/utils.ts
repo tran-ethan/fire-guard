@@ -48,8 +48,8 @@ export function createFireMarker(width?: number, height?: number, color?: string
 
     console.log(latValue);
     const popupContent = `<div class="popup-box">
-            <strong>Lat:</strong> ${latValue}<br>
-            <strong>Lon:</strong> ${lonValue}<br>
+            <strong>Lat:</strong> ${latValue}°<br>
+            <strong>Lon:</strong> ${lonValue}°<br>
             <strong>Date:</strong> ${date}<br>
             <strong>Elevation:</strong> ${elevation} m<br>
             <strong>Mean temperature:</strong> ${mean_temp}°C<br>
