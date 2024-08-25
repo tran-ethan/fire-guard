@@ -29,7 +29,7 @@ export function createFireMarker(width?: number, height?: number, color?: string
   marker.addEventListener('mouseenter', () => {
     console.log("Marker hovered: ", weather);
     const fields = weather.split(",");
-    console.log(fields);
+
     const latValue = parseFloat(fields[0].split(':')[1]);
     const lonValue = parseFloat(fields[1].split(':')[1]);
     const date = fields[2].split(':')[1].slice(1, -1);
@@ -46,8 +46,8 @@ export function createFireMarker(width?: number, height?: number, color?: string
     const soil_moisture = parseFloat(fields[13].split(':')[1]);
     const snow = parseFloat(fields[14].split(':')[1]);
 
-    console.log(latValue);
-    const popupContent = `<div class="popup-box">
+    const popupContent = `
+        <div class="popup-box">
             <strong>Lat:</strong> ${latValue}°<br>
             <strong>Lon:</strong> ${lonValue}°<br>
             <strong>Date:</strong> ${date}<br>
@@ -63,7 +63,8 @@ export function createFireMarker(width?: number, height?: number, color?: string
             <strong>Soil temperature:</strong> ${soil_temp}°C<br>
             <strong>Soil moisture:</strong> ${soil_moisture} m³/m³<br>
             <strong>Snow:</strong> ${snow} cm<br>
-        </div>`;
+        </div>
+      `;
         
     popup.setLngLat([lonValue, latValue])
         .setHTML(popupContent)
