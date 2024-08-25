@@ -1,11 +1,11 @@
 import mapboxgl from "mapbox-gl";
 import FireSvg from "../components/FireSvg.svelte";
 
-export function createFireMarker(width?: number, height?: number, color?: string, weather?: JSON, map: any) {
+export function createFireMarker(width?: number, height?: number, color?: string, weather?: JSON, probability?: float, map: any) {
   const marker = document.createElement("div");
   marker.className = "fire-marker";
 
-  const props: { width?: string; height?: string, color?: string, weather?: JSON } = {};
+  const props: { width?: string; height?: string, color?: string, weather?: JSON, probability?: float } = {};
 
   // Conditionally add props if they are defined
   if (width !== undefined) {
@@ -48,6 +48,7 @@ export function createFireMarker(width?: number, height?: number, color?: string
 
     const popupContent = `
         <div class="popup-box">
+            <strong>Probability:</strong> ${probability * 100}%<br>
             <strong>Lat:</strong> ${latValue}°<br>
             <strong>Lon:</strong> ${lonValue}°<br>
             <strong>Date:</strong> ${date}<br>

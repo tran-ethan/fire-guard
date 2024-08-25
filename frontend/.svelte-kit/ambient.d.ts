@@ -26,9 +26,7 @@
  * ```
  */
 declare module '$env/static/private' {
-	export const ADSK_3DSMAX_x64_2023: string;
 	export const ALLUSERSPROFILE: string;
-	export const AMDRMSDKPATH: string;
 	export const APPDATA: string;
 	export const CHROME_CRASHPAD_PIPE_NAME: string;
 	export const COLOR: string;
@@ -37,28 +35,20 @@ declare module '$env/static/private' {
 	export const CommonProgramW6432: string;
 	export const COMPUTERNAME: string;
 	export const ComSpec: string;
-	export const CONDA_BAT: string;
-	export const CONDA_EXE: string;
-	export const CONDA_SHLVL: string;
-	export const CUDA_PATH: string;
-	export const CUDA_PATH_V12_3: string;
-	export const DEVKITARM: string;
-	export const DEVKITPPC: string;
-	export const DEVKITPRO: string;
 	export const DriverData: string;
 	export const EDITOR: string;
+	export const EFC_5936: string;
 	export const FPS_BROWSER_APP_PROFILE_STRING: string;
 	export const FPS_BROWSER_USER_PROFILE_STRING: string;
 	export const GIT_ASKPASS: string;
-	export const GIT_LFS_PATH: string;
 	export const HOME: string;
 	export const HOMEDRIVE: string;
 	export const HOMEPATH: string;
 	export const INIT_CWD: string;
+	export const JAVA_HOME: string;
 	export const LANG: string;
 	export const LOCALAPPDATA: string;
 	export const LOGONSERVER: string;
-	export const MAYA_SCRIPT_PATH: string;
 	export const NODE: string;
 	export const NODE_EXE: string;
 	export const NPM_CLI_JS: string;
@@ -88,10 +78,10 @@ declare module '$env/static/private' {
 	export const npm_package_peer: string;
 	export const npm_package_resolved: string;
 	export const npm_package_version: string;
-	export const NPM_PREFIX_JS: string;
 	export const NPM_PREFIX_NPM_CLI_JS: string;
 	export const NUMBER_OF_PROCESSORS: string;
 	export const OneDrive: string;
+	export const OneDriveCommercial: string;
 	export const ORIGINAL_XDG_CURRENT_DESKTOP: string;
 	export const OS: string;
 	export const Path: string;
@@ -117,18 +107,12 @@ declare module '$env/static/private' {
 	export const USERDOMAIN_ROAMINGPROFILE: string;
 	export const USERNAME: string;
 	export const USERPROFILE: string;
-	export const VBOX_HWVIRTEX_IGNORE_SVM_IN_USE: string;
-	export const VBOX_MSI_INSTALL_PATH: string;
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const VSCODE_GIT_ASKPASS_NODE: string;
 	export const VSCODE_GIT_IPC_HANDLE: string;
 	export const VSCODE_INJECTION: string;
-	export const WEATHER_API_KEY: string;
-	export const WebStorm: string;
 	export const windir: string;
-	export const _CONDA_EXE: string;
-	export const _CONDA_ROOT: string;
 }
 
 /**
@@ -160,9 +144,7 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
-		ADSK_3DSMAX_x64_2023: string;
 		ALLUSERSPROFILE: string;
-		AMDRMSDKPATH: string;
 		APPDATA: string;
 		CHROME_CRASHPAD_PIPE_NAME: string;
 		COLOR: string;
@@ -171,28 +153,20 @@ declare module '$env/dynamic/private' {
 		CommonProgramW6432: string;
 		COMPUTERNAME: string;
 		ComSpec: string;
-		CONDA_BAT: string;
-		CONDA_EXE: string;
-		CONDA_SHLVL: string;
-		CUDA_PATH: string;
-		CUDA_PATH_V12_3: string;
-		DEVKITARM: string;
-		DEVKITPPC: string;
-		DEVKITPRO: string;
 		DriverData: string;
 		EDITOR: string;
+		EFC_5936: string;
 		FPS_BROWSER_APP_PROFILE_STRING: string;
 		FPS_BROWSER_USER_PROFILE_STRING: string;
 		GIT_ASKPASS: string;
-		GIT_LFS_PATH: string;
 		HOME: string;
 		HOMEDRIVE: string;
 		HOMEPATH: string;
 		INIT_CWD: string;
+		JAVA_HOME: string;
 		LANG: string;
 		LOCALAPPDATA: string;
 		LOGONSERVER: string;
-		MAYA_SCRIPT_PATH: string;
 		NODE: string;
 		NODE_EXE: string;
 		NPM_CLI_JS: string;
@@ -222,10 +196,10 @@ declare module '$env/dynamic/private' {
 		npm_package_peer: string;
 		npm_package_resolved: string;
 		npm_package_version: string;
-		NPM_PREFIX_JS: string;
 		NPM_PREFIX_NPM_CLI_JS: string;
 		NUMBER_OF_PROCESSORS: string;
 		OneDrive: string;
+		OneDriveCommercial: string;
 		ORIGINAL_XDG_CURRENT_DESKTOP: string;
 		OS: string;
 		Path: string;
@@ -251,18 +225,12 @@ declare module '$env/dynamic/private' {
 		USERDOMAIN_ROAMINGPROFILE: string;
 		USERNAME: string;
 		USERPROFILE: string;
-		VBOX_HWVIRTEX_IGNORE_SVM_IN_USE: string;
-		VBOX_MSI_INSTALL_PATH: string;
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		VSCODE_GIT_ASKPASS_NODE: string;
 		VSCODE_GIT_IPC_HANDLE: string;
 		VSCODE_INJECTION: string;
-		WEATHER_API_KEY: string;
-		WebStorm: string;
 		windir: string;
-		_CONDA_EXE: string;
-		_CONDA_ROOT: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
 	}

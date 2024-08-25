@@ -66,10 +66,12 @@
     .then(response => response.json())
     .then((data: any) => { // Specify the type of the response data
       console.log('Success:', data); // Handle the response data
-      const fields = data.weather.split(",");
-      const latValue = parseFloat(fields[0].split(':')[1]);
-      const fireMarker = createFireMarker(30, 30, undefined, data.weather, map);
-      fireMarker.setLngLat([lon, lat]).addTo(map);
+      const prediction = parseInt(data.prediction);
+      const probability = parseFloat(data.probability);
+      if (prediction === 1) {
+        const fireMarker = createFireMarker(30, 30, undefined, data.weather, probability, map);
+        fireMarker.setLngLat([lon, lat]).addTo(map);
+      }
     })
     .catch((error: Error) => {
       console.error('Error:', error); // Handle any errors
