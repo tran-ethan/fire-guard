@@ -10,29 +10,7 @@
   let isHovered = false;
   export let map: mapboxgl.Map;
 
-  let yPosition: number;
-  $: yPosition = $coordinatesY;
-
-  $: coordinatesStyle = `
-    transform: translateY(${yPosition}%);
-    transition: transform 0.4s ease;
-  `;
-  $: hoverStyle = `
-    font-size: ${isHovered ? "35px" : "30px"};
-    color: ${isHovered ? "rgba(202, 120, 104, 0.895)" : "rgba(180, 159, 155, 0.895)"};
-    transition: font-size 0.3s ease, color 0.3s ease;
-  `;
-
-  // Combine transformations for text
-  $: combinedStyle = `
-    transform: translateY(${yPosition + 50}%) translateX(${coordinatesRotated ? 0 : -135}%);
-    transition: transform 0.4s ease;
-  `;
-
-  $: combinedStyleBttn = `
-    transform: translateY(${yPosition + 50}%) translateX(${coordinatesRotated ? 0 : -400}%);
-    transition: transform 0.4s ease;
-  `;
+ 
 
   function toggleCoordinatesRotation() {
     coordinatesRotated = !coordinatesRotated;
@@ -98,32 +76,30 @@
 
   }
 </script>
-
-<div
+<body>
+  <div
   class="coordinates"
-  style={coordinatesStyle + hoverStyle}
   on:click={toggleCoordinatesRotation}
   on:mouseenter={onMouseEnter}
   on:mouseleave={onMouseLeave}
 >
   Coordinates&nbsp;<span id="last-char" class:rotated={coordinatesRotated}
-    >&gt;</span
-  >
+    >&gt;</span>
 </div>
 
-<div id="lat-text" class="text" style={combinedStyle}>
+<div id="lat-text" class="text">
   Latitude:
   <input type="text" bind:value={latInput} class="text-field" />
 </div>
 
-<div id="long-text" class="text" style={combinedStyle}>
+<div id="long-text" class="text">
   Longitude:
   <input type="text" bind:value={longInput} class="text-field" />
 </div>
 
 
 
-<div id="submit-button" class="text" style={combinedStyleBttn}>
+<div id="submit-button" class="text">
   <button
     class="button-30"
     on:click= {handleBttnClick}
@@ -131,8 +107,19 @@
     >Predict</button
   >
 </div>
+</body>
+
 
 <style>
+body {
+  position: relative;
+  display: flex;
+  flex-direction: column; /* or row depending on your layout */
+  justify-content: flex-start; /* Aligns items to the top (or left if flex-direction is row) */
+  align-items: flex-start; /* Aligns items to the left */
+  top: 100px;
+    left: 96.5px;
+}
   #last-char {
     transition: transform 0.3s ease;
   }
@@ -143,8 +130,8 @@
 
   .coordinates {
     position: absolute;
-    top: 22.9%;
-    left: 6.5%;
+    color: rgba(189, 144, 144, 0.842);
+    
     padding: 10px;
     font-size: 30px; /* Base font size */
     border-radius: 5px;
@@ -158,6 +145,10 @@
       transform 0.4s ease,
       font-size 0.3s ease,
       color 0.3s ease;
+  }
+  .coordinates:hover{
+    padding: 10px;
+    font-size: 35px;
   }
 
   .text-field {
@@ -186,20 +177,16 @@
   .text.show {
     transform: translateX(0);
   }
-
-  #long-text {
-    top: 313px;
-    left: 97px;
-    padding: 10px;
-    border-radius: 5px;
-  }
-
   #lat-text {
-    top: 250px;
-    left: 97px;
     padding: 10px;
     border-radius: 5px;
   }
+  #long-text {
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+
   .button-30 {
     align-items: center;
     appearance: none;

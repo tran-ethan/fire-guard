@@ -30,7 +30,7 @@
     "All the Provinces"
   ];
 
-  function toggleFiltersRotation() {
+  /*function toggleFiltersRotation() {
     filtersRotated.update((value) => !value);
 
     if ($filtersRotated && !provinceChecked && !dateChecked) {
@@ -46,16 +46,13 @@
     } else {
       coordinatesY.update((currentY) => 3);
     }
-  }
+  }*/
 
   function byDateChecked() {
     dateChecked = !dateChecked;
     if (dateChecked) {
       initializeFlatpickr();
-      coordinatesY.update((currentY) => currentY + 80);
-    } else {
-      coordinatesY.update((currentY) => currentY - 80);
-    }
+    } 
   }
   function initializeFlatpickr() {
     flatpickr("#start-date", { dateFormat: "d/m/Y" });
@@ -64,12 +61,6 @@
   function byProvinceChecked() {
     provinceChecked = !provinceChecked;
 
-    if (provinceChecked) {
-      initializeFlatpickr();
-      coordinatesY.update((currentY) => currentY + 200);
-    } else {
-      coordinatesY.update((currentY) => currentY - 200);
-    }
   }
 
   function filterProvinces() {}
