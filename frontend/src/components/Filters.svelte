@@ -3,7 +3,7 @@
   import "flatpickr/dist/flatpickr.min.css";
   import { filtersRotated } from "../lib/store";
   import { coordinatesY } from "../lib/store";
-  import { get } from "svelte/store";
+  
 
   let coordinatesRotated = false;
   let dateChecked = false;

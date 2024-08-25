@@ -6,6 +6,7 @@
   import { onMount } from "svelte";
   import { createFireMarker } from "../lib/utils";
   import { getWildFires } from "../lib/wildfires";
+    import Prediction from "../components/Prediction.svelte";
 
   mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string;
   let map: mapboxgl.Map;
@@ -50,4 +51,5 @@
   <Map/>
   <Filters />
   <Coordinates map={map} />
+  <Prediction />
 </div>
