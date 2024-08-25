@@ -41,7 +41,7 @@
 </script>
 
 <div>
-  <title on:click={() => (window.location.href = "/")}>
+  <title>
     <img src="logo.png" alt="Icon" class="icon" />
     Fire Guard
   </title>
@@ -49,6 +49,7 @@
   <home on:click={() => (window.location.href = "/")}> Home </home>
 
   <Map/>
+  <Filters />
   <Coordinates map={map} />
   <Prediction />
 </div>
