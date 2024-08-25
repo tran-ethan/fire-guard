@@ -113,12 +113,8 @@
 <div id="submit-button" class="text" style={combinedStyleBttn} >
   <button
     class="button-30"
-<<<<<<< HEAD
-    on:click= {handleBttnClick}>Predict</button
-=======
     on:click={() => predict(parseFloat(latInput), parseFloat(longInput))}
     >Predict</button
->>>>>>> 4894cdaf9eedb38b2f1863fde36a62922f032f8e
   >
 </div>
 </body>
