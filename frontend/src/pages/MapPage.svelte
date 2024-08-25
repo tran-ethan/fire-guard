@@ -17,7 +17,7 @@
 
   async function addFireMarkers(old_fires_json: any[], map: any) {
     for (const fire of old_fires_json) {
-      const fireMarker = createFireMarker(30, 30, undefined, JSON.stringify(fire), map);
+      const fireMarker = createFireMarker(map, JSON.stringify(fire), undefined, 30, 30);
       fireMarker.setLngLat([fire.lon, fire.lat]).addTo(map);
       await sleep(1);
     }

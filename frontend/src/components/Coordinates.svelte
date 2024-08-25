@@ -69,7 +69,7 @@
       const prediction = parseInt(data.prediction);
       const probability = parseFloat(data.probability);
       if (prediction === 1) {
-        const fireMarker = createFireMarker(30, 30, undefined, data.weather, probability, map);
+        const fireMarker = createFireMarker(map, JSON.stringify(data.weather), probability, 30, 30);
         fireMarker.setLngLat([lon, lat]).addTo(map);
       }
     })
