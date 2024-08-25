@@ -1,5 +1,7 @@
 <script lang="ts">
+    import { get } from "svelte/store";
   import { coordinatesY } from "../lib/store";
+  import { showPopup } from "../lib/store";
   import { createFireMarker } from "../lib/utils";
 
   let coordinatesRotated = false;
@@ -21,6 +23,16 @@
   function onMouseLeave() {
     isHovered = false;
   }
+  function handleBttnClick(){
+    
+    showPopup.set(true);
+    showPopup.subscribe(value => {
+    console.log('showPopup value:', value);
+  });
+    predict(parseFloat(latInput), parseFloat(longInput));
+    
+  }
+
 
   function predict(lat: number, lon: number) {
     // HTTP post to backend server
@@ -46,7 +58,7 @@
       console.log('Success:', data); // Handle the response data
       const fields = data.weather.split(",");
       const latValue = parseFloat(fields[0].split(':')[1]);
-      const fireMarker = createFireMarker(30, 30, undefined, data.weather, map);
+      const fireMarker = createFireMarker(30, 30, undefined, data.weather, lon , lat, map);
       fireMarker.setLngLat([lon, lat]).addTo(map);
     })
     .catch((error: Error) => {
@@ -90,7 +102,8 @@
 <div id="submit-button" class="text">
   <button
     class="button-30"
-    on:click={() => predict(parseFloat(latInput), parseFloat(longInput))}
+    on:click= {handleBttnClick}
+  
     >Predict</button
   >
 </div>
