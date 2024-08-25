@@ -1,19 +1,20 @@
 <script lang="ts">
-  import { getWildFire } from "./lib/wildfires";
+  // import { getWildFires } from "./lib/wildfires";
   import { onMount } from "svelte";
   import HomePage from "./pages/HomePage.svelte";
   import MapPage from "./pages/MapPage.svelte";
 
   let currentRoute = "/map";
 
-  onMount(async () => {
-    try {
-      const fire = await getWildFire("EFnlJ7dUtmLCF5qhHg1N");
-      console.log(fire);
-    } catch (error) {
-      console.error(error);
-    }
-  });
+  // onMount(async () => {
+  //   try {
+  //     //const fire = await getWildFires();
+  //     console.log("app");
+  //     //console.log(fire);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // });
 
   const routes: {
     [key: string]: any;

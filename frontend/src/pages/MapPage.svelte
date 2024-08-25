@@ -11,6 +11,19 @@
   mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string;
   let map: mapboxgl.Map;
 
+  function sleep(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function addFireMarkers(old_fires_json: any[], map: any) {
+    for (const fire of old_fires_json) {
+      const fireMarker = createFireMarker(30, 30, undefined, JSON.stringify(fire), map);
+      fireMarker.setLngLat([fire.lon, fire.lat]).addTo(map);
+      await sleep(1);
+    }
+  }
+
+
   onMount(async () => {
     const link = document.createElement("link");
     link.href = "https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css";
@@ -31,12 +44,20 @@
     // Set the map's max bounds.
     map.setMaxBounds(bounds as mapboxgl.LngLatBoundsLike);
 
+    console.log("begin")
+
     const fires = await getWildFires();
 
-    fires.forEach((fire) => {
-      const fireMarker = createFireMarker(30, 30);
-      fireMarker.setLngLat([fire.lon, fire.lat]).addTo(map);
-    });
+    console.log("done")
+
+    const old_fires = fires.old
+    const live_fires = fires.live
+
+    const old_fires_json = JSON.parse(old_fires);
+    const live_fires_json = JSON.parse(live_fires);
+
+    addFireMarkers(old_fires_json, map);
+    addFireMarkers(live_fires_json, map);
   });
 </script>
 

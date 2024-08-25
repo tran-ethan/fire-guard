@@ -1,41 +1,41 @@
-import {
-    QueryFieldFilterConstraint,
-    Timestamp,
-} from "firebase/firestore";
-import {
-    getDocumentData,
-    getDocumentDatas,
-} from "./db";
-import axios from "axios";
 
 export type WildFire = {
     lat: number;
     lon: number;
-    agency: string;
-    cause: string;
-    date: Timestamp;
-    responseType: string;
     hectares: number;
+    date: string;
+    elevation: number;
+    temp_c: number;
+    max_temp_c: number;
+    min_temp_c: number;
+    wind_kph: number;
+    wind_dir: number;
+    precip_mm: number;
+    humidity: number;
+    pressure_hPa: number;
+    soil_temp_c: number;
+    soil_moisture: number;
+    totalsnow_cm: number;
 }
 
-const collectionName = "livedata";
 
-export async function getWildFire(id: string) {
-    return await getDocumentData<WildFire>(collectionName, id);
-}
+export async function getWildFires() {
+    try {
+        // Perform the GET request to the server
+        const response = await fetch('http://18.217.35.228:5000/get-fires');
 
-export async function getWildFires(...constraints: QueryFieldFilterConstraint[]) {
-    return await getDocumentDatas<WildFire>(collectionName, ...constraints);
-}
+        // Check if the response is successful
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-export async function getWildfirePrediction(lat: number, lon: number) {
-    //TODO: put actual URL
-    return axios.post("http://localhost:5000/predict", {
-        lat: lat,
-        lon: lon
-    }).then((response) => {
-        return response.data;
-    }).catch((error) => {
-        console.log(error);
-    });
+        // Parse the JSON response
+        const data = await response.json();
+
+        console.log('Received data:', data);
+
+        return data
+    } catch (error) {
+        console.error('Failed to fetch data:', error);
+    }
 }
