@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c4e9aa90-7726-4a53-96d0-709b39456e3a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/Coordinates.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/Coordinates.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/lib/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/lib/utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model.joblib" beforeDir="false" afterPath="$PROJECT_DIR$/model.joblib" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modeling.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/modeling.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -67,6 +66,7 @@
       <workItem from="1724542836588" duration="602000" />
       <workItem from="1724550151244" duration="258000" />
       <workItem from="1724552773094" duration="3003000" />
+      <workItem from="1724598054341" duration="324000" />
     </task>
     <servers />
   </component>
