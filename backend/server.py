@@ -4,11 +4,12 @@ import subprocess
 import joblib
 import pandas as pd
 from io import StringIO
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app) # enable routes for all routes
 
-model = joblib.load('../model/model-xgb.joblib')
+model = joblib.load('../model/model.joblib')
 
 def predict_input(input_df):
     # load the model
@@ -82,18 +83,52 @@ def fire_analysis():
         except Exception as e:
             return jsonify({'status': 'error', 'message': str(e)})
         
-@app.route('/get-fires', methods=['GET'])
+# @app.route('/get-fires', methods=['GET'])
+# def get_fires():
+#     old_df = pd.read_csv("data/2000-2021_fires+weather.csv")
+#     old_json = old_df.to_json(orient='records')
+
+#     live_df = pd.read_csv("Arcgis/data/Active_Fires.csv")
+#     live_json = live_df.to_json(orient='records')
+
+#     return jsonify({
+#         'old': old_json,
+#         'live': live_json
+#     })
+
+@app.route('/get-fires', methods=['POST'])
 def get_fires():
-    old_df = pd.read_csv("data/2000-2021_fires+weather.csv")
-    old_json = old_df.to_json(orient='records')
 
-    live_df = pd.read_csv("Arcgis/data/Active_Fires.csv")
-    live_json = live_df.to_json(orient='records')
+    # Extract arguments from the request
+    args = request.json.get('args', [])
+    print(f"Received arguments: {args}")
 
-    return jsonify({
-        'old': old_json,
-        'live': live_json
-    })
+    if (len(args) == 2):
+        try:
+            start_date = args[0]
+            end_date = args[1]
+
+            dt_start = datetime.strptime(start_date, '%d-%m-%Y')
+            dt_end = datetime.strptime(end_date, '%d-%m-%Y')
+
+            old_df = pd.read_csv("data/2000-2021_fires+weather.csv")
+            old_df_date = pd.to_datetime(old_df['date'])
+            old_filtered_df = old_df[(old_df_date >= dt_start) & (old_df_date <= dt_end)]
+            old_filtered_json = old_filtered_df.to_json(orient='records')
+
+            live_df = pd.read_csv("Arcgis/data/Active_Fires.csv")
+            live_df_date = pd.to_datetime(live_df['date'])
+            live_filtered_df = live_df[(live_df_date >= dt_start) & (live_df_date <= dt_end)]
+            live_filtered_json = live_filtered_df.to_json(orient='records')
+
+            return jsonify({
+                'old': old_filtered_json,
+                'live': live_filtered_json
+            })
+        
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': str(e)})
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

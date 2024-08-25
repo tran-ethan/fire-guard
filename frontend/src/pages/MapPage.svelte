@@ -23,7 +23,6 @@
     }
   }
 
-
   onMount(async () => {
     const link = document.createElement("link");
     link.href = "https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css";
