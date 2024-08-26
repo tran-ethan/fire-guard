@@ -6,7 +6,9 @@
   import { onMount } from "svelte";
   import { createFireMarker } from "../lib/utils";
   import { getWildFires } from "../lib/wildfires";
-    import Prediction from "../components/Prediction.svelte";
+  import Prediction from "../components/Prediction.svelte";
+  import Overlay from "../components/Overlay.svelte";
+
 
   mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string;
   let map: mapboxgl.Map;
@@ -62,10 +64,11 @@
 </script>
 
 <div>
-  <title>
+  <title on:click={() => (window.location.href = "/")}>
     <img src="logo.png" alt="Icon" class="icon" />
     Fire Guard
   </title>
+  <!-- <Overlay /> -->
 
   <home on:click={() => (window.location.href = "/")}> Home </home>
 
