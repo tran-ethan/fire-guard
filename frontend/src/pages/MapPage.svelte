@@ -65,7 +65,7 @@
 
 <div>
   <title on:click={() => (window.location.href = "/")}>
-    <img src="logo.png" alt="Icon" class="icon" />
+    <!-- <img src="logo.png" alt="Icon" class="icon" /> -->
     Fire Guard
   </title>
   <!-- <Overlay /> -->
