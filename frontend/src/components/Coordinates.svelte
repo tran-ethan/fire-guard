@@ -169,6 +169,8 @@
   }
 
   .text-field {
+    
+  font-family: "Lilita One", sans-serif;
     margin: 0 10px;
     padding: 5px 10px;
     width: 100px;
@@ -181,6 +183,8 @@
   }
 
   .text {
+    
+  font-family: "Lilita One", sans-serif;
     position: absolute;
     font-size: 25px;
     z-index: 10;

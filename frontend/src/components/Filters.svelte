@@ -64,6 +64,7 @@
     By Date
   </label>
   {#if dateChecked}
+
     <div class="by-date-label">
       <input
         type="text"
@@ -88,6 +89,7 @@
     <button class="button-30" id="button-30-date">
       Search by Date
     </button>
+    
   {/if}
   
 </div>

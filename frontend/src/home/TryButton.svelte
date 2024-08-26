@@ -6,6 +6,8 @@ Try it out now!
 
 <style>
     .button{
+      
+  font-family: "Lilita One", sans-serif;
         position: fixed; 
     bottom: 40px;
     right: 40px; 

@@ -88,22 +88,14 @@ home:hover{
   width: 100%;
 }
 
+button {
 
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
-  }
+  font-family: "Lilita One", sans-serif;
 }
+
+ input {
+  font-family: "Lilita One", sans-serif;
+ }
 
 .popup-box {
   background-color: grey;
@@ -116,7 +108,7 @@ home:hover{
 }
 
 .button-30 {
-  align-items: center;
+    align-items: center;
   appearance: none;
   background-color: #d8bfc4;
   border-radius: 4px;
@@ -128,9 +120,7 @@ home:hover{
   box-sizing: border-box;
   color: #917b7b;
   cursor: pointer;
-  display: inline-flex;
   height: 48px;
-  justify-content: center;
   line-height: 1;
   list-style: none;
   overflow: hidden;
@@ -153,7 +143,12 @@ home:hover{
   left: 190%;
 }
 
-.button-30-date{
+#button-30-date{
+  font-size: 14px; 
+  position: absolute;
+  top: 117.2%;
+  left: 33%;
+  height: 39px;
   
 }
 
