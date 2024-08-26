@@ -1,7 +1,7 @@
 <script lang="ts">
-  import MapPage from "./pages/MapPage.svelte";
+  import HomePage from "./pages/HomePage.svelte";
 </script>
 
 <main>
-  <MapPage />
+  <HomePage />
 </main>
