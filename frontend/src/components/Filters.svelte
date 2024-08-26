@@ -3,15 +3,17 @@
   import "flatpickr/dist/flatpickr.min.css";
   import { filtersRotated } from "../lib/store";
   import { coordinatesY } from "../lib/store";
-    import { onMount } from "svelte";
-  
+  import { onMount } from "svelte";
+  import { getWildFires } from "../lib/wildfires";
+  import { createFireMarker } from "../lib/utils";
+  export let map: mapboxgl.Map;
 
   let coordinatesRotated = false;
   let dateChecked = false;
   let startDate = "";
   let endDate = "";
   let newYValue = coordinatesY;
-
+  let markers = [];
 
   function toggleFiltersRotation() {
     filtersRotated.update((value) => !value);
@@ -43,10 +45,47 @@
   }
  
 
-  onMount(() => {
+  onMount(async () => {
     flatpickr("#start-date", { dateFormat: "d/m/Y" });
     flatpickr("#end-date", { dateFormat: "d/m/Y" });
   });
+
+  function sleep(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function addFireMarkers(old_fires_json: any[], map: any) {
+    for (const fire of old_fires_json) {
+      const fireMarker = createFireMarker(map, JSON.stringify(fire), undefined, 30, 30);
+      fireMarker.setLngLat([fire.lon, fire.lat]).addTo(map);
+      markers.push(fireMarker);
+      await sleep(1);
+    }
+  }
+
+  async function filter() {
+    // Remove all markers from map
+    markers.forEach(marker => marker.remove());
+    markers = []; // Clear the markers array
+
+    // Get date
+    const start = startDate.replace(/\//g, "-");
+    const end = endDate.replace(/\//g, "-");
+
+    // Get wildfires
+    const fires = await getWildFires(start, end);
+
+    const old_fires = fires.old
+    const live_fires = fires.live
+
+    const old_fires_json = JSON.parse(old_fires);
+    const live_fires_json = JSON.parse(live_fires);
+
+    // Add to map
+    addFireMarkers(old_fires_json, map);
+    addFireMarkers(live_fires_json, map);
+  }
+
 </script>
 
 <div id="filters" class="filters" on:click={toggleFiltersRotation}>
@@ -65,6 +104,7 @@
     By Date
   </label>
   {#if dateChecked}
+
     <div class="by-date-label">
       <input
         type="text"
@@ -86,6 +126,10 @@
         on:click={initializeFlatpickrEnd()}
       />
     </div>
+    <button class="button-30" id="button-30-date" on:click={filter}>
+      Filter by date
+    </button>
+    
   {/if}
   
 </div>
