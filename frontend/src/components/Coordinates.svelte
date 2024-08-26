@@ -25,7 +25,7 @@
 
   // Combine transformations for text
   $: combinedStyle = `
-    transform: translateY(${yPosition + 50}%) translateX(${coordinatesRotated ? 0 : -135}%);
+    transform: translateY(${yPosition + 50}%) translateX(${coordinatesRotated ? 0 : -155}%);
     transition: transform 0.4s ease;
   `;
 
@@ -188,7 +188,7 @@
     cursor: pointer;
     color: rgba(180, 159, 155, 0.895);
     transition: transform 0.4s ease;
-    transform: translateX(-135%);
+    transform: translateX(-145%);
   }
 
   .text.show {
