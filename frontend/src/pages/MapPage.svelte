@@ -6,7 +6,9 @@
   import { onMount } from "svelte";
   import { createFireMarker } from "../lib/utils";
   import { getWildFires } from "../lib/wildfires";
-    import Prediction from "../components/Prediction.svelte";
+  import Prediction from "../components/Prediction.svelte";
+  import Overlay from "../components/Overlay.svelte";
+
 
   mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string;
   let map: mapboxgl.Map;
@@ -45,32 +47,33 @@
 
     // Example of how to use the get-fires POST endpoint
 
-    let startDate = "01-05-2005"
-    let endDate = "31-05-2005"
+    // let startDate = "01-05-2005"
+    // let endDate = "03-05-2005"
 
-    const fires = await getWildFires(startDate, endDate);
+    // const fires = await getWildFires(startDate, endDate);
 
-    const old_fires = fires.old
-    const live_fires = fires.live
+    // const old_fires = fires.old
+    // const live_fires = fires.live
 
-    const old_fires_json = JSON.parse(old_fires);
-    const live_fires_json = JSON.parse(live_fires);
+    // const old_fires_json = JSON.parse(old_fires);
+    // const live_fires_json = JSON.parse(live_fires);
 
-    addFireMarkers(old_fires_json, map);
-    addFireMarkers(live_fires_json, map);
+    // addFireMarkers(old_fires_json, map);
+    // addFireMarkers(live_fires_json, map);
   });
 </script>
 
 <div>
-  <title>
+  <title on:click={() => (window.location.href = "/")}>
     <img src="logo.png" alt="Icon" class="icon" />
     Fire Guard
   </title>
+  <!-- <Overlay /> -->
 
   <home on:click={() => (window.location.href = "/")}> Home </home>
 
   <Map/>
-  <Filters />
+  <Filters map={map}/>
   <Coordinates map={map} />
   <Prediction />
 </div>
