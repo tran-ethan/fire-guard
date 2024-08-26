@@ -1,10 +1,9 @@
 <script lang="ts">
   // import { getWildFires } from "./lib/wildfires";
   import { onMount } from "svelte";
-  import HomePage from "./pages/HomePage.svelte";
   import MapPage from "./pages/MapPage.svelte";
 
-  let currentRoute = "/map";
+  let currentRoute = "/";
 
   // onMount(async () => {
   //   try {
@@ -19,8 +18,7 @@
   const routes: {
     [key: string]: any;
   } = {
-    "/": HomePage,
-    "/map": MapPage,
+    "/": MapPage,
   };
 
   onMount(() => {
