@@ -187,8 +187,6 @@
       box-shadow 0.2s ease;
   }
   
-
-  
   .flatpickr-calendar {
     z-index: 99;
   }
