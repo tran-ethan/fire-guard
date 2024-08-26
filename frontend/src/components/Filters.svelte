@@ -4,7 +4,6 @@
   import { filtersRotated } from "../lib/store";
   import { coordinatesY } from "../lib/store";
     import { onMount } from "svelte";
-  
 
   let coordinatesRotated = false;
   let dateChecked = false;
@@ -86,6 +85,9 @@
         on:click={initializeFlatpickrEnd()}
       />
     </div>
+    <button class="button-30" id="button-30-date">
+      Search by Date
+    </button>
   {/if}
   
 </div>
@@ -186,7 +188,14 @@
       border-color 0.2s ease,
       box-shadow 0.2s ease;
   }
-  
+  .button{
+    margin: 0 10px;
+    padding: 5px 10px;
+    width: 120px;
+    font-size: 18px;
+
+    outline: none;
+  }
 
   
   .flatpickr-calendar {
