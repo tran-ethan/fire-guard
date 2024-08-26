@@ -8,42 +8,20 @@
 
   let coordinatesRotated = false;
   let dateChecked = false;
-  let provinceChecked = false;
   let startDate = "";
   let endDate = "";
-  let provinceInput = "";
   let newYValue = coordinatesY;
 
-  const filteredProvinces = [
-    "Alberta",
-    "British Columbia",
-    "Manitoba",
-    "New Brunswick",
-    "Newfoundland and Labrador",
-    "Northwest Territories",
-    "Nova Scotia",
-    "Nunavut",
-    "Ontario",
-    "Prince Edward Island",
-    "Quebec",
-    "Saskatchewan",
-    "Yukon"
-  ];
 
   function toggleFiltersRotation() {
     filtersRotated.update((value) => !value);
 
-    if ($filtersRotated && !provinceChecked && !dateChecked) {
+    if ($filtersRotated && !dateChecked) {
       coordinatesY.update((currentY) => 150);
-      console.log($coordinatesY);
-    } else if ($filtersRotated && provinceChecked && dateChecked) {
-      coordinatesY.update((currentY) => 440);
       console.log($coordinatesY);
     } else if ($filtersRotated && dateChecked) {
       coordinatesY.update((currentY) => 230);
-    } else if ($filtersRotated && provinceChecked) {
-      coordinatesY.update((currentY) => 360);
-    } else {
+    }else {
       coordinatesY.update((currentY) => 3);
     }
   }
@@ -63,15 +41,7 @@
   function initializeFlatpickrEnd() {
     flatpickr("#end-date", { dateFormat: "d/m/Y" });
   }
-  function byProvinceChecked() {
-    provinceChecked = !provinceChecked;
-
-    if (provinceChecked) {
-      coordinatesY.update((currentY) => currentY + 200);
-    } else {
-      coordinatesY.update((currentY) => currentY - 200);
-    }
-  }
+ 
 
   onMount(() => {
     flatpickr("#start-date", { dateFormat: "d/m/Y" });
@@ -117,36 +87,7 @@
       />
     </div>
   {/if}
-  <label class="custom-checkbox">
-    <input
-      type="checkbox"
-      name="filter"
-      value="province"
-      on:change={byProvinceChecked}
-    />
-    <span class="custom-checkmark"></span>
-    By Province
-  </label>
-  {#if provinceChecked}
-    <div class="by-province-dropdown">
-      <input
-        type="text"
-        bind:value={provinceInput}
-        on:click={filterProvinces}
-        placeholder="Select Province"
-        class="text-field"
-        id="text-field-province"
-        readonly
-      />
-      {#if filteredProvinces.length > 0}
-        <ul class="province-list">
-          {#each filteredProvinces as province}
-            <li on:click={() => (provinceInput = province)}>{province}</li>
-          {/each}
-        </ul>
-      {/if}
-    </div>
-  {/if}
+  
 </div>
 
 <style>
@@ -187,7 +128,7 @@
     left: 77px;
     top: 24.3%;
     color: rgba(180, 159, 155, 0.895);
-    transform: translateX(-160%);
+    transform: translateX(-170%);
     transition: transform 0.3s ease;
   }
 
@@ -245,42 +186,10 @@
       border-color 0.2s ease,
       box-shadow 0.2s ease;
   }
-  #text-field-province {
-    width: 140px;
-    margin-left: 0px;
-  }
+  
 
-  .by-province-dropdown {
-    position: relative;
-    margin-top: 10px;
-  }
-
-  .province-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    position: left;
-    width: 150px;
-    background-color: transparent;
-    border: 1px solid rgba(180, 159, 155, 0.895);
-    border-radius: 4px;
-    max-height: 75px;
-    overflow-y: auto;
-    z-index: 10;
-  }
-
-  .province-list li {
-    padding: 10px;
-    font-size: 18px;
-  }
-
-  .province-list li:hover {
-    background-color: rgba(180, 159, 155, 0.2);
-  }
+  
   .flatpickr-calendar {
     z-index: 99;
-  }
-  #text-field-province:focus + .dropdown-content {
-    display: block;
   }
 </style>

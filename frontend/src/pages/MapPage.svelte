@@ -43,20 +43,21 @@
     // Set the map's max bounds.
     map.setMaxBounds(bounds as mapboxgl.LngLatBoundsLike);
 
-    console.log("begin")
+    // Example of how to use the get-fires POST endpoint
 
-    const fires = await getWildFires();
+    // let startDate = "01-05-2005"
+    // let endDate = "01-07-2005"
 
-    console.log("done")
+    // const fires = await getWildFires(startDate, endDate);
 
-    const old_fires = fires.old
-    const live_fires = fires.live
+    // const old_fires = fires.old
+    // const live_fires = fires.live
 
-    const old_fires_json = JSON.parse(old_fires);
-    const live_fires_json = JSON.parse(live_fires);
+    // const old_fires_json = JSON.parse(old_fires);
+    // const live_fires_json = JSON.parse(live_fires);
 
-    addFireMarkers(old_fires_json, map);
-    addFireMarkers(live_fires_json, map);
+    // addFireMarkers(old_fires_json, map);
+    // addFireMarkers(live_fires_json, map);
   });
 </script>
 
