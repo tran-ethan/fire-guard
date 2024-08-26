@@ -188,18 +188,6 @@
       border-color 0.2s ease,
       box-shadow 0.2s ease;
   }
-<<<<<<< HEAD
-  .button{
-    margin: 0 10px;
-    padding: 5px 10px;
-    width: 120px;
-    font-size: 18px;
-
-    outline: none;
-  }
-
-=======
->>>>>>> cda0550301f7d7c9a6aad73dc2e1d7fb3bc322f1
   
   .flatpickr-calendar {
     z-index: 99;
