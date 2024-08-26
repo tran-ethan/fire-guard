@@ -6,8 +6,6 @@ import { resolve } from 'path'
 const root = resolve(__dirname, 'src')
 const outDir = resolve(__dirname, 'dist')
 
-
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [reactRefresh(), svelte()],
@@ -17,7 +15,6 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(root, 'index.html'),
-        about: resolve(root, 'home', 'index.html'),
       }
     }
   }
