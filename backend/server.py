@@ -66,10 +66,6 @@ def fire_analysis():
 
                 print("Returning the output...")
 
-                probability -= 0.15
-
-                if (probability < 0): prediction = 0
-
                 prediction = str(prediction)
                 probability = str(probability)
 
