@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import MapPage from "./pages/MapPage.svelte";
 
-  let currentRoute = "/";
+  let currentRoute = "/map";
 
   // onMount(async () => {
   //   try {
@@ -18,7 +18,7 @@
   const routes: {
     [key: string]: any;
   } = {
-    "/": MapPage,
+    "/map": MapPage,
   };
 
   onMount(() => {
