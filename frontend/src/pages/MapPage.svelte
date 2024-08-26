@@ -48,7 +48,7 @@
     // Example of how to use the get-fires POST endpoint
 
     let startDate = "01-05-2005"
-    let endDate = "31-05-2005"
+    let endDate = "03-05-2005"
 
     const fires = await getWildFires(startDate, endDate);
 
@@ -73,7 +73,7 @@
   <home on:click={() => (window.location.href = "/")}> Home </home>
 
   <Map/>
-  <Filters />
+  <Filters map={map}/>
   <Coordinates map={map} />
   <Prediction />
 </div>
