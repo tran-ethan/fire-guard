@@ -47,19 +47,19 @@
 
     // Example of how to use the get-fires POST endpoint
 
-    let startDate = "01-05-2005"
-    let endDate = "03-05-2005"
+    // let startDate = "01-05-2005"
+    // let endDate = "03-05-2005"
 
-    const fires = await getWildFires(startDate, endDate);
+    // const fires = await getWildFires(startDate, endDate);
 
-    const old_fires = fires.old
-    const live_fires = fires.live
+    // const old_fires = fires.old
+    // const live_fires = fires.live
 
-    const old_fires_json = JSON.parse(old_fires);
-    const live_fires_json = JSON.parse(live_fires);
+    // const old_fires_json = JSON.parse(old_fires);
+    // const live_fires_json = JSON.parse(live_fires);
 
-    addFireMarkers(old_fires_json, map);
-    addFireMarkers(live_fires_json, map);
+    // addFireMarkers(old_fires_json, map);
+    // addFireMarkers(live_fires_json, map);
   });
 </script>
 

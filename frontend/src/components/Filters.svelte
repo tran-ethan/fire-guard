@@ -13,7 +13,7 @@
   let startDate = "";
   let endDate = "";
   let newYValue = coordinatesY;
-
+  let markers = [];
 
   function toggleFiltersRotation() {
     filtersRotated.update((value) => !value);
@@ -58,14 +58,21 @@
     for (const fire of old_fires_json) {
       const fireMarker = createFireMarker(map, JSON.stringify(fire), undefined, 30, 30);
       fireMarker.setLngLat([fire.lon, fire.lat]).addTo(map);
+      markers.push(fireMarker);
       await sleep(1);
     }
   }
 
   async function filter() {
+    // Remove all markers from map
+    markers.forEach(marker => marker.remove());
+    markers = []; // Clear the markers array
+
+    // Get date
     const start = startDate.replace(/\//g, "-");
     const end = endDate.replace(/\//g, "-");
 
+    // Get wildfires
     const fires = await getWildFires(start, end);
 
     const old_fires = fires.old
@@ -74,6 +81,7 @@
     const old_fires_json = JSON.parse(old_fires);
     const live_fires_json = JSON.parse(live_fires);
 
+    // Add to map
     addFireMarkers(old_fires_json, map);
     addFireMarkers(live_fires_json, map);
   }
