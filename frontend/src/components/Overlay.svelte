@@ -3,24 +3,32 @@
     import * as Collapsible from "$lib/components/ui/collapsible";
     import ChevronsUpDown from "lucide-svelte/icons/chevrons-up-down";
     import { Button } from "$lib/components/ui/button/index.js";
+    import { Input } from "$lib/components/ui/input/index.js";
     import CalendarIcon from "lucide-svelte/icons/calendar";
+    import type { DateRange } from "bits-ui";
     import {
-        DateFormatter,
-        type DateValue,
-        getLocalTimeZone
+      CalendarDate,
+      DateFormatter,
+      type DateValue,
+      getLocalTimeZone
     } from "@internationalized/date";
     import { cn } from "$lib/utils.js";
-    import { Calendar } from "$lib/components/ui/calendar/index.js";
+    import { RangeCalendar } from "$lib/components/ui/range-calendar/index.js";
     import * as Popover from "$lib/components/ui/popover/index.js";
-    import { Input } from "$lib/components/ui/input/index.js";
-    
-    // Calendar
-    const df = new DateFormatter("en-US", {
-        dateStyle: "long"
-    });
-    
-    let value: DateValue | undefined = undefined;
 
+    // Calendar
+
+  const df = new DateFormatter("en-US", {
+    dateStyle: "medium"
+  });
+ 
+  let value: DateRange | undefined = {
+    start: new CalendarDate(2022, 1, 20),
+    end: new CalendarDate(2022, 1, 20).add({ days: 20 })
+  };
+ 
+  let startValue: DateValue | undefined = undefined;
+  
 </script>
 
 <div style="position: absolute; z-index: 30;">
@@ -35,42 +43,44 @@
         </Collapsible.Trigger>
       </div>
       <Collapsible.Content class="space-y-2">
-        <Popover.Root>
+        <div class="grid gap-2">
+          <Popover.Root openFocus>
             <Popover.Trigger asChild let:builder>
-                <Button
+              <Button
                 variant="outline"
                 class={cn(
-                    "w-[280px] justify-start text-left font-normal",
-                    !value && "text-muted-foreground"
+                  "w-[300px] justify-start text-left font-normal",
+                  !value && "text-muted-foreground"
                 )}
                 builders={[builder]}
-                >
+              >
                 <CalendarIcon class="mr-2 h-4 w-4" />
-                {value ? df.format(value.toDate(getLocalTimeZone())) : "Pick a start date"}
-                </Button>
+                {#if value && value.start}
+                  {#if value.end}
+                    {df.format(value.start.toDate(getLocalTimeZone()))} - {df.format(
+                      value.end.toDate(getLocalTimeZone())
+                    )}
+                  {:else}
+                    {df.format(value.start.toDate(getLocalTimeZone()))}
+                  {/if}
+                {:else if startValue}
+                  {df.format(startValue.toDate(getLocalTimeZone()))}
+                {:else}
+                  Pick a date
+                {/if}
+              </Button>
             </Popover.Trigger>
-            <Popover.Content class="w-auto p-0">
-                <Calendar bind:value initialFocus />
+            <Popover.Content class="w-auto p-0" align="start">
+              <RangeCalendar
+                bind:value
+                bind:startValue
+                initialFocus
+                numberOfMonths={2}
+                placeholder={value?.start}
+              />
             </Popover.Content>
-        </Popover.Root>
-        <Popover.Root>
-            <Popover.Trigger asChild let:builder>
-                <Button
-                variant="outline"
-                class={cn(
-                    "w-[280px] justify-start text-left font-normal",
-                    !value && "text-muted-foreground"
-                )}
-                builders={[builder]}
-                >
-                <CalendarIcon class="mr-2 h-4 w-4" />
-                {value ? df.format(value.toDate(getLocalTimeZone())) : "Pick an end date"}
-                </Button>
-            </Popover.Trigger>
-            <Popover.Content class="w-auto p-0">
-                <Calendar bind:value initialFocus />
-            </Popover.Content>
-        </Popover.Root>
+          </Popover.Root>
+        </div>
       </Collapsible.Content>
     </Collapsible.Root>
     <Collapsible.Root class="w-[350px] space-y-2">
@@ -84,8 +94,8 @@
         </Collapsible.Trigger>
       </div>
       <Collapsible.Content class="space-y-2">
-        <Input type="number" placeholder="Latitude" class="max-w-xs" />
-        <Input type="number" placeholder="Longitude" class="max-w-xs" />
+        <Input type="number" placeholder="Latitude" class="font-lilita-one mx-[10px] my-0 px-[10px] py-[5px] w-[100px] max-h-[30px] text-[18px] border border-[rgba(180,159,155,0.895)] rounded-[4px] outline-none bg-transparent" />
+        <Input type="number" placeholder="Longitude" class="max-w-xs font-lilita-one mx-[10px] my-0 px-[10px] py-[5px] w-[100px] max-h-[30px] text-[18px] border border-[rgba(180,159,155,0.895)] rounded-[4px] outline-none bg-transparent" />
       </Collapsible.Content>
     </Collapsible.Root>
   </div>
