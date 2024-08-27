@@ -7,7 +7,6 @@
       margin-top: 110%;
       margin-left: 0%;
       opacity: 0.9;
-      z-index: -20;
     }
     
     .loupe-img{

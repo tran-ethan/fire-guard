@@ -82,7 +82,6 @@
     right: -70px;
     bottom: 130px;
     width: 80%; /* Adjust the container width as needed */
-    z-index: -1;
   }
 
   .header,
