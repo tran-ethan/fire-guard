@@ -72,7 +72,7 @@
 
   .background::before {
     content: "";
-    background-image: url("homepage.jpeg");
+    background-image: url("homepage.png");
     background-size: contain; /* Ensures the entire image is visible without cropping */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-position: center right; /* Positions the image to the right */
