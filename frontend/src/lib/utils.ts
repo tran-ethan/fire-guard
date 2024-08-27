@@ -95,7 +95,7 @@ export function createFireMarker(map: any, weather: string, probability?: number
 
     const latValue = parseFloat(fields[0].split(':')[1]);
     const lonValue = parseFloat(fields[1].split(':')[1]);
-    const date = fields[2].split(':')[1].slice(1, -1);
+    const date = fields[2].split(':')[1].slice(2, -2);
     const elevation = parseFloat(fields[3].split(':')[1]);
     const mean_temp = parseFloat(fields[4].split(':')[1]);
     const max_temp = parseFloat(fields[5].split(':')[1]);
