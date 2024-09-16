@@ -18,13 +18,14 @@ By accurately predicting wildfires locations, we can:
 Our solution involved the development of a Random Forests classification machine learning model using sci-kit learn trained on historical wildfire data which predicts the likelihood and location of future wildfires using current geographic and climate data.
 
 ## Datasets
-Data sources
+### Data sources
 - Environment and Climate Change Canada's [MSC GeoMet Dataset](https://api.weather.gc.ca/collections?lang=en)
 - [ArcGIS](https://www.arcgis.com/index.html)
 - [Kaggle Wildfires in Canada (1950-2021) dataset](https://www.kaggle.com/datasets/ulasozdemir/wildfires-in-canada-19502021/code)
-Data collection
+
+### Data collection
 - ArcGIS
 - [Open-Meteo](https://open-meteo.com/)
-Data attributes
+### Data attributes
 - Metorological data (max/min/mean temperature, wind speed/direction, precipitation, humidity, pressure, soil temperature/moisture, date) along with coordinates (lat/lon) to train the model
 - Used servers with python scripts to clean data, and add weather data to a larger data set
